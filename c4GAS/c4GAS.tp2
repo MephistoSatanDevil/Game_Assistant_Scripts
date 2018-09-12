@@ -1,7 +1,7 @@
 BACKUP ~c4GAS/backup~
 AUTHOR ~c4demon@gmail.com~
 
-VERSION ~v1.01~
+VERSION ~v1.1~
 
 AUTO_EVAL_STRINGS
 
@@ -32,7 +32,6 @@ REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @-10000
 //热键
 INCLUDE ~%LIBS%/hotkey.tph~
 
-PRINT @-10
 SILENT
 	
 //战斗脚本
@@ -49,6 +48,8 @@ COPY_EXISTING ~SCRPDESC.2DA~ ~override~
 	REPLACE ~999999~ @122
 
 //一键初始化
+PRINT @-10
+
 INCLUDE ~%LIBS%/ds/ds.tph~
 LAF detectable_spells END
 

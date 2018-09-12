@@ -5,7 +5,7 @@ ALTER_TLK BEGIN
 END
 
 COPY ~.../inlined/blank.2da~ ~%OUTPUT%/buff_spell_dialog.2da~
-APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~spell_name%TAB%level%TAB%type%TAB%default~
+APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~name_strref%TAB%level%TAB%type%TAB%default~
 
 COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
 	COUNT_2DA_COLS cols
@@ -19,32 +19,32 @@ COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
 		PATCH_IF IS_AN_INT ~%default%~ BEGIN
 			INNER_ACTION BEGIN
 				COPY_EXISTING - ~%spell%.spl~ override
-					READ_LONG 0x8 name
-					PATCH_IF name>0 && name<strref_max BEGIN	GET_STRREF name spell_name END
+					READ_LONG 8 name
+					PATCH_IF name>0 && name<strref_max BEGIN SET ~%spell%_name_str~=name END
 					READ_LONG 0x34 level
 					
 				//子法术无名字时用母法术名字
 				ACTION_IF (name<1 || name>=strref_max) && (~%mother%~ STR_CMP ~*~) && (FILE_EXISTS_IN_GAME ~%mother%.spl~) BEGIN
 					COPY_EXISTING - ~%mother%.spl~ override
-						READ_LONG 0x8 name
-						PATCH_IF name>0 && name<strref_max BEGIN	GET_STRREF name spell_name END
+						READ_LONG 8 name
+						PATCH_IF name>0 && name<strref_max BEGIN SET ~%spell%_name_str~=name END
 				END ELSE BEGIN
 					ACTION_PHP_EACH lack_spell_names AS file => int BEGIN
-						ACTION_IF ~%file%~ STR_EQ ~%file%~ BEGIN
-							OUTER_SET name=int
-							ACTION_GET_STRREF name spell_name
+						ACTION_IF ~%file%~ STR_EQ ~%spell%~ BEGIN
+							OUTER_SET ~%spell%_name_str~=int
 						END
 					END
-					ACTION_IF !VARIABLE_IS_SET name BEGIN
-						OUTER_SET spell_name = RESOLVE_STR_REF ((AT 1000))
+					ACTION_IF !VARIABLE_IS_SET ~%spell%_name_str~ BEGIN
+						OUTER_SET ~%spell%_name_str~ = RESOLVE_STR_REF ((AT 1000))
 					END
 				END
+				
+				OUTER_SET name_str = ~%spell%_name_str~
 
-				APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~%spell%%TAB%%spell_name%%TAB%%level%%TAB%%type%%TAB%%default%~
-				UNLESS ~%spell%%TAB%%spell_name%%TAB%%level%%TAB%%type%%TAB%%default%~
+				APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
+				UNLESS ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
 			END
 		END
-		SET_2DA_ENTRY i 1 cols ~%default%~
 	END
 	
 
@@ -58,11 +58,12 @@ COPY - ~%OUTPUT%/buff_spell_dialog.2da~ ~%OUTPUT%/buff_spell_dialog.2da~
 	FOR (j=9;j>0;j -= 1) BEGIN
 		FOR (i=0;i<rows;++i) BEGIN
 			READ_2DA_ENTRY_FORMER rows i 0 spell
-			READ_2DA_ENTRY_FORMER rows i 1 name
+			READ_2DA_ENTRY_FORMER rows i 1 name_str
 			READ_2DA_ENTRY_FORMER rows i 2 level
 			READ_2DA_ENTRY_FORMER rows i 3 type
 			READ_2DA_ENTRY_FORMER rows i 4 default
 			PATCH_IF level=j BEGIN
+				GET_STRREF name_str name
 				PHP_EACH dialog_state AS m => n BEGIN
 					PATCH_IF ~%type%~ STR_EQ ~%m%~ BEGIN SET state=n END
 				END
@@ -72,7 +73,7 @@ COPY - ~%OUTPUT%/buff_spell_dialog.2da~ ~%OUTPUT%/buff_spell_dialog.2da~
 						SPRINT trans_var ~%x_1%~
 					END
 				END
-				PATCH_IF ~%type%~ STRING_CONTAINS_REGEXP ~_ini~ BEGIN
+				PATCH_IF ~%type%~ STRING_CONTAINS_REGEXP ~_inn~ BEGIN
 					SPRINT spell_name ~%name%~^~%prefix%~^~%level%~^~%suffix%~
 				END ELSE SPRINT spell_name ~%name%~
 				INNER_ACTION BEGIN
