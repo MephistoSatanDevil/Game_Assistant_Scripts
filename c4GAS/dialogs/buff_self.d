@@ -1,6 +1,6 @@
 
 ALTER_TRANS c4AIcons
-BEGIN 7 END
+BEGIN 8 END
 BEGIN ~%trans%~ END
 BEGIN
 "TRIGGER" ~Global("%trans_var%","Global",0)~
