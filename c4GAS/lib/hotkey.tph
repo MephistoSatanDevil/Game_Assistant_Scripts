@@ -1,0 +1,71 @@
+
+PRINT @-1
+PRINT @-2
+ACTION_READLN sethotkey
+OUTER_SET x = STRING_LENGTH EVAL ~%sethotkey%~
+OUTER_WHILE (~%sethotkey%~ STRING_CONTAINS_REGEXP ~[YyNn]~) || (%x% > 1) BEGIN
+  PRINT @-3
+  PRINT @-2
+  ACTION_READLN sethotkey
+  OUTER_SET x = STRING_LENGTH EVAL ~%sethotkey%~
+END
+
+ACTION_IF ~%sethotkey%~ STR_EQ ~n~ BEGIN
+	OUTER_SPRINT tweak L
+	OUTER_SPRINT selfbuff N
+	OUTER_SPRINT teambuff M
+END ELSE BEGIN
+
+	PRINT @-4
+	ACTION_READLN tweak
+	OUTER_SET x = STRING_LENGTH ~%tweak%~
+	OUTER_WHILE (~%tweak%~ STRING_MATCHES_REGEXP ~[A-Za-z]~) || (%x% > 1) BEGIN
+		PRINT @-3
+		PRINT @-4
+		ACTION_READLN tweak
+		OUTER_SET x = STRING_LENGTH ~%tweak%~
+	END
+	 
+	PRINT @-5
+	ACTION_READLN selfbuff
+	OUTER_SET x = STRING_LENGTH ~%selfbuff%~
+	OUTER_WHILE (~%selfbuff%~ STRING_MATCHES_REGEXP ~[A-Za-z]~) || (%x% > 1) BEGIN
+		PRINT @-3
+		PRINT @-5
+		ACTION_READLN selfbuff
+		OUTER_SET x = STRING_LENGTH ~%selfbuff%~
+	END
+
+	OUTER_WHILE ~%selfbuff%~ STRING_EQUAL ~%tweak%~ BEGIN
+		PRINT @-6
+		PRINT @-5
+		ACTION_READLN selfbuff
+		OUTER_SET x = STRING_LENGTH ~%selfbuff%~
+	END
+
+	PRINT @-7
+	ACTION_READLN teambuff
+	OUTER_SET x = STRING_LENGTH ~%teambuff%~
+	OUTER_WHILE (~%teambuff%~ STRING_MATCHES_REGEXP ~[A-Za-z]~) || (%x% > 1) BEGIN
+		PRINT @-3
+		PRINT @-7
+		ACTION_READLN teambuff
+		OUTER_SET x = STRING_LENGTH ~%teambuff%~
+	END
+
+	OUTER_WHILE (~%teambuff%~ STRING_EQUAL ~%tweak%~) || (~%teambuff%~ STRING_EQUAL ~%selfbuff%~) BEGIN
+		PRINT @-6
+		PRINT @-7
+		ACTION_READLN teambuff
+		OUTER_SET x = STRING_LENGTH ~%teambuff%~
+	END
+
+END
+
+COPY_EXISTING_REGEXP ~DPLAYER[23].bcs~ override
+	R_B_B EVAL ~%SCRIPTS%/hotkey.baf~  ~%SCRIPTS%/hotkey.baf~ ON_MISMATCH
+		INNER_ACTION BEGIN
+			EXTEND_BOTTOM ~%SOURCE_RES%.bcs~ ~%SCRIPTS%/hotkey.baf~ EVAL
+		END
+	END
+	BUT_ONLY

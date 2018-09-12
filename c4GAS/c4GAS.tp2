@@ -1,0 +1,61 @@
+BACKUP ~c4GAS/backup~
+AUTHOR ~c4demon@gmail.com~
+
+VERSION ~v1.0~
+
+AUTO_EVAL_STRINGS
+
+AUTO_TRA ~%MOD_FOLDER%/languages/%s~
+
+README ~c4GAS/languages/%LANGUAGE%/readme.pdf~
+
+ALWAYS
+
+	INCLUDE ~%MOD_FOLDER%/lib/_always.tph~
+
+END
+
+LANGUAGE
+  ~English~ 	~english~  
+							~c4GAS/languages/english/setup.tra~
+							~c4GAS/languages/english/game.tra~
+LANGUAGE
+  ~简体中文~ 	~schinese~
+							~c4GAS/languages/schinese/prompts-%WEIDU_OS%.tra~
+							~c4GAS/languages/schinese/setup.tra~ 
+							~c4GAS/languages/schinese/game.tra~
+
+BEGIN  @-0
+DESIGNATED 1
+REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @-10000
+
+//热键
+INCLUDE ~%LIBS%/hotkey.tph~
+
+PRINT @-10
+SILENT
+	
+//战斗脚本
+INCLUDE ~%LIBS%/auto_pause.tph~
+INCLUDE ~%LIBS%/checks.tph~
+
+COMPILE ~%SCRIPTS%/c4AIbase.baf~ EVAL
+	
+COPY_EXISTING c4AIbase.bcs ~scripts/c4AIbase.bs~
+
+APPEND ~SCRPDESC.2DA~ ~c4AIbase 999998 999999~
+COPY_EXISTING ~SCRPDESC.2DA~ ~override~
+	REPLACE ~999998~ @121
+	REPLACE ~999999~ @122
+
+//一键初始化
+INCLUDE ~%LIBS%/ds/ds.tph~
+LAF detectable_spells END
+
+INCLUDE ~%LIBS%/buff_init.tph~
+
+//脚本创建
+INCLUDE ~%LIBS%/buff_scripts.tph~
+
+//对话
+INCLUDE ~%LIBS%/dialog.tph~

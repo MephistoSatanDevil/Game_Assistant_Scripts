@@ -1,0 +1,289 @@
+SILENT
+
+DEFINE_ACTION_MACRO define_stats BEGIN	//定义stats	
+SILENT
+	LAM read_ids
+	
+	OUTER_SET stats_now=stats_offset
+	COPY ~%MOD_FOLDER%/lib/buff1key.ini~ ~%workspc%~
+	OUTER_SPRINT file0 ~%MOD_FOLDER%/lib/buff1key.ini~
+	OUTER_SPRINT filename0 ~buff1key~
+	OUTER_SPRINT file ~%filepath%/%filename%.ini~
+	ACTION_IF custom=1 && ~%file0%~ STR_CMP ~%file%~ THEN BEGIN
+		COPY ~%file%~ ~%workspc%~
+	END ELSE BEGIN
+		OUTER_SPRINT filename blank
+		COPY ~.../inlined/blank.baf~ ~%workspc%/blank.ini~
+	END
+
+	ACTION_FOR_EACH inifile IN filename0 filename BEGIN
+	COPY ~%workspc%/%%inifile%%.ini~ ~%workspc%~
+		READ_2DA_ENTRIES_NOW rows 14
+		FOR(i=1;i<rows;i+=1) BEGIN
+			exist=0
+			READ_2DA_ENTRY_FORMER rows i 0 _FileRES
+			READ_2DA_ENTRY_FORMER rows i 2 _SettingVariable
+			READ_2DA_ENTRY_FORMER rows i 4 _Stat
+			READ_2DA_ENTRY_FORMER rows i 12 _CopyFrom
+			READ_2DA_ENTRY_FORMER rows i 13 _MotherFile
+			
+			PATCH_IF _Stat=~-1~ BEGIN 
+				SET_2DA_ENTRY_LATER new_stat i 5 ~%engine_value_type%~
+			END	
+			PATCH_IF ~%_MotherFile%~ STR_EQ ~+~ THEN BEGIN
+				SET_2DA_ENTRY_LATER new_stat i 13 ~%_FileRES%~
+			END
+			
+			PHP_EACH oldstats AS old => oldstat BEGIN
+				PATCH_IF ~%_FileRES%~ STR_EQ ~%old%~ THEN BEGIN
+					SET_2DA_ENTRY_LATER new_stat i 4 oldstat
+					exist=1
+				END
+			END
+			PATCH_IF exist=0 BEGIN
+				PHP_EACH stat_exists AS value_0 => string_0 BEGIN
+					PATCH_IF ~%string_0%~ STR_EQ ~c4AI_%_SettingVariable%~ THEN BEGIN
+						SET_2DA_ENTRY_LATER new_stat i 4 value_0
+						exist=1
+					END
+				END
+			END
+			PATCH_IF _Stat= ~-1~ && exist=0 THEN BEGIN
+				this=stats_now
+				x=this
+				WHILE x<32768 BEGIN
+					skip=0
+					PHP_EACH stat_exists AS value => string BEGIN
+						PATCH_IF x=value THEN BEGIN
+							skip=1
+						END
+					END
+					PATCH_IF skip=0 THEN BEGIN 
+						x=32768
+						stats_now=this
+					END ELSE BEGIN 
+						this +=1 
+						x+=1
+					END
+				END
+				SET_2DA_ENTRY_LATER new_stat i 4 this
+				SET $oldstats(~%_FileRES%~)=this
+				PATCH_IF ~%_CopyFrom%~ STR_CMP ~#~ THEN BEGIN
+					PHP_EACH oldstats AS old => oldstat BEGIN
+						PATCH_IF ~%_CopyFrom%~ STR_EQ ~%old%~ THEN BEGIN								
+							SET_2DA_ENTRY_LATER new_stat i 4 oldstat
+							SET $oldstats(~%_FileRES%~)=oldstat
+							stats_now -= 1
+						END
+					END
+				END
+				SPRINT $stat_exists(~%stats_now%~) ~c4AI_%_SettingVariable%~
+				INNER_ACTION BEGIN
+					APPEND ~c4_stat_temp.ids~ ~%stats_now% c4AI_%_SettingVariable%~ UNLESS ~c4AI_%_SettingVariable%~
+					APPEND ~%engine_ids_file%.ids~ ~%stats_now% c4AI_%_SettingVariable%~ UNLESS ~c4AI_%_SettingVariable%~
+				END
+			END
+			SET_2DA_ENTRIES_NOW new_stat 14
+		END
+	END
+END
+
+DEFINE_ACTION_MACRO spell_file BEGIN
+	ACTION_IF ~%FileRES%~ STR_EQ ~SPPR203~ && GAME_IS ~bgee bg2ee eet~ BEGIN
+		OUTER_SPRINT ~FileRES_Check~ ~SPPR203D~
+	END ELSE OUTER_SPRINT ~FileRES_Check~ ~%FileRES%~
+	
+	COPY_EXISTING ~%FileRES_Check%.%FileEXT%~ override
+		READ_LONG 0x8 spellname
+		GET_STRREF spellname thename
+		PATCH_IF ~%CloneResource%~ STR_EQ ~*~ THEN BEGIN
+			SPRINT CloneResource SAME
+		END
+		PATCH_IF Stat >= stats_offset THEN BEGIN
+			Stat+=%engine_stat_type%
+			// LPF DELETE_EFFECT STR_VAR match_resource=c4AI END
+			LPF CLONE_EFFECT 
+				INT_VAR
+					multi_match=0 
+					match_opcode= %CloneOpcode% 
+					match_parameter1= %CloneParameter1% 
+					match_parameter2= %CloneParameter2% 
+					opcode=%engine_mark_type% 
+					parameter1=%Value% 
+					parameter2= %Stat% 
+					special= %engine_special_type%
+				STR_VAR
+					match_resource= EVAL ~%CloneResource%~ 
+					insert=first
+					resource=c4AIStat
+			END
+		END
+	IF_EXISTS BUT_ONLY
+END
+	
+DEFINE_ACTION_MACRO scripts BEGIN
+	ACTION_DEFINE_ASSOCIATIVE_ARRAY compare_type BEGIN
+		E => ~CheckStat~
+		G => ~CheckStatGT~
+		L => ~CheckStatLT~
+		N => ~!CheckStat~
+	END	
+	ACTION_DEFINE_ASSOCIATIVE_ARRAY compare_type_ee BEGIN
+		E => ~CheckSpellState~
+		G => ~!CheckSpellState~
+		L => ~!CheckSpellState~
+		N => ~!CheckSpellState~
+	END
+			
+	ACTION_IF GAME_IS ~bgee bg2ee eet~ && Stat>255 THEN BEGIN
+		ACTION_PHP_EACH compare_type_ee AS mark => trigger BEGIN
+			ACTION_IF ~%mark%~ STR_EQ ~%Comparison%~ THEN BEGIN
+				OUTER_SPRINT ~Comparison~ ~%trigger%~
+			END
+		END
+	END ELSE BEGIN 
+		ACTION_PHP_EACH compare_type AS mark => trigger BEGIN
+			ACTION_IF ~%mark%~ STR_EQ ~%Comparison%~ THEN BEGIN
+				OUTER_SPRINT ~Comparison~ ~%trigger%~
+			END
+		END
+	END
+	
+	ACTION_IF ~%Target%~ STR_EQ ~self~ THEN BEGIN
+		COPY ~%workspc%/c4#self.baf~ ~%workspc%~
+			APPEND_FILE_EVALUATE ~%baf_d%/buff_self.baf~
+	END		
+	ACTION_IF ~%Target%~ STR_EQ ~selfdelay~ THEN BEGIN
+		COPY ~%workspc%/buff_selfdelay.baf~ ~%workspc%~
+			APPEND_FILE_EVALUATE ~%baf_d%/buff_self_delay.baf~
+	END
+	
+	ACTION_IF ~%Target%~ STR_EQ ~team~ THEN BEGIN
+		OUTER_FOR (order=1;order<7;order+=1) BEGIN
+			COPY ~%workspc%/c4#team%order%.baf~ ~%workspc%~
+				FOR (pn=1;pn<7;pn+=1) BEGIN
+					APPEND_FILE_EVALUATE ~%baf_d%/buff_team.baf~
+				END
+		END
+	END
+	ACTION_IF ~%Target%~ STR_EQ ~teamdelay~ THEN BEGIN
+		OUTER_FOR (order=1;order<7;order+=1) BEGIN
+			COPY ~%workspc%/buff_teamdelay%order%.baf~ ~%workspc%~
+				FOR (pn=1;pn<7;pn+=1) BEGIN
+					APPEND_FILE_EVALUATE ~%baf_d%/buff_team_delay.baf~
+				END
+		END
+	END
+END
+	
+DEFINE_ACTION_MACRO dialog BEGIN
+SILENT
+	ACTION_IF custom=1 && patch_dialog=1 THEN BEGIN
+		ACTION_IF ~%Target%~ STR_EQ ~self~ || ~%Target%~ STR_EQ ~selfdelay~ THEN BEGIN
+			COMPILE EVAL  ~%dlg_d%/buffmods.d~ 
+		END ELSE BEGIN
+			COMPILE EVAL  ~%dlg_d%/buffmodt.d~ 
+		END
+	END			
+END
+
+DEFINE_ACTION_FUNCTION create_buff_stat INT_VAR custom=1 patch_dialog=1 STR_VAR filepath = ~%1key_buff_path%~ filename = ~%1key_buff_file%~ BEGIN	
+SILENT
+	//初始化
+	COPY ~.../inlined/blank.baf~ ~%workspc%/buff_selfdelay.baf~
+	COPY ~.../inlined/blank.baf~ ~%workspc%/c4#self.baf~
+		APPEND_FILE ~%baf_d%/buff_resistance_self.baf~
+		
+	OUTER_FOR (order=1;order<7;order+=1) BEGIN
+		COPY ~.../inlined/blank.baf~ ~%workspc%/buff_teamdelay%order%.baf~
+		COPY ~.../inlined/blank.baf~ ~%workspc%/c4#team%order%.baf~
+			FOR (pn=1;pn<7;pn+=1) BEGIN
+				APPEND_FILE_EVALUATE ~%baf_d%/buff_resistance_team.baf~
+			END
+	END
+		
+	//初始化对话
+	ACTION_IF custom=1 && patch_dialog=1 THEN BEGIN
+		COMPILE EVAL ~%dlg_d%/buffmod.d~
+	END
+	
+	//初始化stats
+	LAM define_stats
+	
+	COPY ~%workspc%/%filename0%.ini~ ~%workspc%~
+		READ_2DA_ENTRIES_NOW rows 14
+		FOR(i=1;i<rows;i+=1) BEGIN
+			READ_2DA_ENTRY_FORMER rows i 0 FileRES
+			READ_2DA_ENTRY_FORMER rows i 1 FileEXT
+			READ_2DA_ENTRY_FORMER rows i 2 SettingVariable
+			READ_2DA_ENTRY_FORMER rows i 3 Default
+			READ_2DA_ENTRY_FORMER rows i 4 Stat
+			READ_2DA_ENTRY_FORMER rows i 5 Value
+			READ_2DA_ENTRY_FORMER rows i 6 Comparison
+			READ_2DA_ENTRY_FORMER rows i 7 CloneOpcode
+			READ_2DA_ENTRY_FORMER rows i 8 CloneParameter1
+			READ_2DA_ENTRY_FORMER rows i 9 CloneParameter2
+			READ_2DA_ENTRY_FORMER rows i 10 CloneResource
+			READ_2DA_ENTRY_FORMER rows i 11 Target
+			READ_2DA_ENTRY_FORMER rows i 12 CopyFrom
+			READ_2DA_ENTRY_FORMER rows i 13 MotherFileRES
+			PATCH_IF ~%FileRES%~ STRING_CONTAINS_REGEXP ~;~ THEN BEGIN
+				INNER_ACTION BEGIN
+					LAM spell_file
+					LAM scripts
+				END
+			END
+		END
+		
+	COPY ~%workspc%/%filename%.ini~ ~%workspc%~
+		READ_2DA_ENTRIES_NOW rows 14
+		FOR(i=1;i<rows;i+=1) BEGIN
+			READ_2DA_ENTRY_FORMER rows i 0 FileRES
+			READ_2DA_ENTRY_FORMER rows i 1 FileEXT
+			READ_2DA_ENTRY_FORMER rows i 2 SettingVariable
+			READ_2DA_ENTRY_FORMER rows i 3 Default
+			READ_2DA_ENTRY_FORMER rows i 4 Stat
+			READ_2DA_ENTRY_FORMER rows i 5 Value
+			READ_2DA_ENTRY_FORMER rows i 6 Comparison
+			READ_2DA_ENTRY_FORMER rows i 7 CloneOpcode
+			READ_2DA_ENTRY_FORMER rows i 8 CloneParameter1
+			READ_2DA_ENTRY_FORMER rows i 9 CloneParameter2
+			READ_2DA_ENTRY_FORMER rows i 10 CloneResource
+			READ_2DA_ENTRY_FORMER rows i 11 Target
+			READ_2DA_ENTRY_FORMER rows i 12 CopyFrom
+			READ_2DA_ENTRY_FORMER rows i 13 MotherFileRES
+			PATCH_IF ~%_FileRES%~ STRING_CONTAINS_REGEXP ~;~ THEN BEGIN
+				INNER_ACTION BEGIN
+					LAM spell_file
+					LAM scripts
+					LAM dialog
+				END
+			END
+		END
+		
+	COMPILE EVAL ~%baf_d%/c4#buff.baf~
+	
+	COPY ~%workspc%/c4#self.baf~ ~%workspc%~
+		APPEND_FILE_EVALUATE ~%workspc%/buff_selfdelay.baf~
+		APPEND_FILE_EVALUATE ~%baf_d%/buff_restore.baf~
+		PATCH_IF GAME_IS ~bgee bg2ee eet~ BEGIN
+				REPLACE_TEXTUALLY ~,%engine_value_type%,~ ~,~
+		END
+	COMPILE EVAL ~%workspc%/c4#self.baf~
+		
+	OUTER_FOR (order=1;order<7;order+=1) BEGIN
+		COPY ~%workspc%/c4#team%order%.baf~ ~%workspc%~
+			APPEND_FILE_EVALUATE ~%workspc%/buff_teamdelay%order%.baf~
+			PATCH_IF order=6 BEGIN
+				APPEND_FILE_EVALUATE ~%baf_d%/buff_restore.baf~
+			END ELSE BEGIN
+				next=order+1
+				APPEND_FILE_EVALUATE ~%baf_d%/buff_team_next.baf~
+			END
+			PATCH_IF GAME_IS ~bgee bg2ee eet~ BEGIN
+				REPLACE_TEXTUALLY ~,%engine_value_type%,~ ~,~
+			END
+		COMPILE EVAL ~%workspc%/c4#team%order%.baf~
+	END
+	
+END

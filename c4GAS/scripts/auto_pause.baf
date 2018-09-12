@@ -1,0 +1,30 @@
+
+IF
+	!PartyRested()
+	!CheckSpellState(Myself,c4AI_Is_Casting_A_Spell)
+  Global("c4AI_AutoPause_Skins","Global",1)
+  CheckStat(Player%slot%,0,88)
+  TriggerOverride(Player%slot%,Global("c4AI_AutoPause_Skins","Locals",1))
+THEN
+  RESPONSE #100
+		ReallyForceSpellRES("%SS0SPL%",Player%slot%)
+    DisplayStringHead(Player%slot%, %string_skin%)
+    MoveViewObject(Player%slot%,INSTANT)
+    ActionOverride(Player%slot%,PauseGame())
+		Continue()
+END
+
+IF
+	!PartyRested()
+	!CheckSpellState(Myself,c4AI_Is_Casting_A_Spell)
+  Global("c4AI_AutoPause_Weapons","Global",0)
+  CheckStat(Player%slot%,0,128)
+  TriggerOverride(Player%slot%,Global("c4AI_AutoPause_Weapons","Locals",1))
+THEN
+  RESPONSE #100
+		ReallyForceSpellRES("%PFMW0SPL%",Player%slot%)
+    DisplayStringHead(Player%slot%, %string_weapon%)
+    MoveViewObject(Player%slot%,INSTANT)
+    ActionOverride(Player%slot%,PauseGame())
+		Continue()
+END

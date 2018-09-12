@@ -1,0 +1,85 @@
+
+OUTER_SET strref_max=0
+ALTER_TLK BEGIN
+	++strref_max
+END
+
+COPY ~.../inlined/blank.2da~ ~%OUTPUT%/buff_spell_dialog.2da~
+APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~spell_name%TAB%level%TAB%type%TAB%default~
+
+COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
+	COUNT_2DA_COLS cols
+	READ_2DA_ENTRIES_NOW rows cols
+	FOR (i=1;i<rows;++i) BEGIN
+		SET hide=0
+		READ_2DA_ENTRY_FORMER rows i 0 spell
+		READ_2DA_ENTRY_FORMER rows i 1 default
+		READ_2DA_ENTRY_FORMER rows i 2 type
+		READ_2DA_ENTRY_FORMER rows i 5 mother
+		PATCH_IF IS_AN_INT ~%default%~ BEGIN
+			INNER_ACTION BEGIN
+				COPY_EXISTING - ~%spell%.spl~ override
+					READ_LONG 0x8 name
+					PATCH_IF name>0 && name<strref_max BEGIN	GET_STRREF name spell_name END
+					READ_LONG 0x34 level
+					
+				//子法术无名字时用母法术名字
+				ACTION_IF (name<1 || name>=strref_max) && (~%mother%~ STR_CMP ~*~) && (FILE_EXISTS_IN_GAME ~%mother%.spl~) BEGIN
+					COPY_EXISTING - ~%mother%.spl~ override
+						READ_LONG 0x8 name
+						PATCH_IF name>0 && name<strref_max BEGIN	GET_STRREF name spell_name END
+				END ELSE BEGIN
+					ACTION_PHP_EACH lack_spell_names AS file => int BEGIN
+						ACTION_IF ~%file%~ STR_EQ ~%file%~ BEGIN
+							OUTER_SET name=int
+							ACTION_GET_STRREF name spell_name
+						END
+					END
+					ACTION_IF !VARIABLE_IS_SET name BEGIN
+						OUTER_SET spell_name = RESOLVE_STR_REF ((AT 1000))
+					END
+				END
+
+				APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~%spell%%TAB%%spell_name%%TAB%%level%%TAB%%type%%TAB%%default%~
+				UNLESS ~%spell%%TAB%%spell_name%%TAB%%level%%TAB%%type%%TAB%%default%~
+			END
+		END
+		SET_2DA_ENTRY i 1 cols ~%default%~
+	END
+	
+
+COMPILE EVAL ~%DLGS%/c4AIcons.d~
+
+COPY - ~%OUTPUT%/buff_spell_dialog.2da~ ~%OUTPUT%/buff_spell_dialog.2da~
+	SPRINT prefix @43
+	SPRINT suffix @44
+	COUNT_2DA_COLS cols
+	READ_2DA_ENTRIES_NOW rows cols
+	FOR (j=9;j>0;j -= 1) BEGIN
+		FOR (i=0;i<rows;++i) BEGIN
+			READ_2DA_ENTRY_FORMER rows i 0 spell
+			READ_2DA_ENTRY_FORMER rows i 1 name
+			READ_2DA_ENTRY_FORMER rows i 2 level
+			READ_2DA_ENTRY_FORMER rows i 3 type
+			READ_2DA_ENTRY_FORMER rows i 4 default
+			PATCH_IF level=j BEGIN
+				PHP_EACH dialog_state AS m => n BEGIN
+					PATCH_IF ~%type%~ STR_EQ ~%m%~ BEGIN SET state=n END
+				END
+				PHP_EACH activate_trans AS x => y BEGIN
+					PATCH_IF ~%type%~ STR_EQ ~%x%~ BEGIN
+						SET trans=y
+						SPRINT trans_var ~%x_1%~
+					END
+				END
+				PATCH_IF ~%type%~ STRING_CONTAINS_REGEXP ~_ini~ BEGIN
+					SPRINT spell_name ~%name%~^~%prefix%~^~%level%~^~%suffix%~
+				END ELSE SPRINT spell_name ~%name%~
+				INNER_ACTION BEGIN
+					ACTION_IF ~%type%~ STRING_CONTAINS_REGEXP ~t_~ BEGIN
+						COMPILE EVAL ~%DLGS%/buff_self.d~
+					END ELSE COMPILE EVAL ~%DLGS%/buff_team.d~
+				END
+			END
+		END
+	END

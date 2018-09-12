@@ -1,0 +1,155 @@
+
+DEFINE_ACTION_MACRO append_script BEGIN
+	
+	ACTION_IF trigger_num>1 BEGIN
+		OUTER_SPRINT trigger ~OR(%trigger_num%)~^~%trigger%~
+	END
+	
+	OUTER_SPRINT file ~buff_base~
+	
+	ACTION_IF NOT ~%type%~ STRING_CONTAINS_REGEXP ~s_~ BEGIN
+		OUTER_SPRINT file ~%file%~^~_self~
+		OUTER_SPRINT spell_var ~c4AI_Buff_%spell%~
+	END ELSE BEGIN
+		OUTER_SPRINT file ~%file%~^~_team~
+		OUTER_SPRINT spell_var ~c4AI_Buff_%spell%_N%order%~
+	END
+	
+	ACTION_IF NOT ~%type%~ STRING_CONTAINS_REGEXP ~_res~ BEGIN
+		OUTER_SPRINT file ~%file%~^~_res~
+	END
+	
+	ACTION_IF NOT ~%type%~ STRING_CONTAINS_REGEXP ~_del~ BEGIN
+		OUTER_SPRINT file ~%file%~^~_delay~
+		OUTER_SPRINT delay_check ~GlobalTimerExpired("c4AI_Buff_Start_Timer","Locals")~
+	END ELSE OUTER_SPRINT delay_check ~~
+	
+	ACTION_IF NOT FILE_EXISTS ~%OUTPUT%/%file%.baf~ BEGIN
+		COPY ~.../inlined/blank.baf~ ~%OUTPUT%/%file%.baf~
+	END ELSE BEGIN	
+		COPY ~%OUTPUT%/%file%.baf~ ~%OUTPUT%/%file%.baf~
+			APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_base.baf~
+	END
+
+END
+
+COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
+	COUNT_2DA_COLS cols
+	READ_2DA_ENTRIES_NOW rows cols
+	FOR (i=1;i<rows;++i) BEGIN
+		READ_2DA_ENTRY_FORMER rows i 0 spell
+		READ_2DA_ENTRY_FORMER rows i 1 default
+		READ_2DA_ENTRY_FORMER rows i 2 type
+		READ_2DA_ENTRY_FORMER rows i 5 mother
+		READ_2DA_ENTRY_FORMER rows i 6 scripts
+		PATCH_IF IS_AN_INT ~%default%~ BEGIN
+			PATCH_IF ~%mother%~ STR_EQ ~*~ BEGIN SPRINT mother ~%spell%~ END
+			INNER_ACTION BEGIN
+				COPY_EXISTING - ~%spell%.spl~ override
+					SPRINT trigger ~~
+					SET trigger_num=0
+					SET saved=0
+					GET_OFFSET_ARRAY header SPL_V10_HEADERS
+					PHP_EACH header AS int => index BEGIN
+						PATCH_IF saved=0 BEGIN
+							GET_OFFSET_ARRAY2 effect index SPL_V10_HEAD_EFFECTS
+							PHP_EACH effect AS int => offset BEGIN
+								READ_SHORT offset opcode
+								READ_LONG offset+4 param1
+								READ_LONG offset+8 param2
+								//抗性法术无须检测stats等
+								PATCH_IF	(NOT ~%type%~ STRING_CONTAINS_REGEXP ~_res~) && 
+													(opcode=233 || opcode=282 || opcode=328)
+								BEGIN SET opcode=9999 END
+								//#282的param2加156
+								SET param2=(opcode=282) ? param2+156 : param2
+								//团队buff默认变量
+								PATCH_IF ~%type%~ STRING_CONTAINS_REGEXP ~s_~ BEGIN
+									TEXT_SPRINT default ~%player_slot%~
+								END
+								//已有标注的直接使用
+								PATCH_IF ~%scripts%~ STR_EQ ~*~ BEGIN
+									PHP_EACH trigger_command AS opcode1 => string BEGIN
+										PATCH_IF opcode=opcode1 && !(VARIABLE_IS_SET ~%spell%-%opcode%-%param1%-%param2%~) BEGIN
+											SET ~%spell%-%opcode%-%param1%-%param2%~=1
+											SPRINT trigger ~%trigger%%LNL%%TAB%~^~%string%~
+											TEXT_SPRINT trigger ~%trigger%~
+											SET ++trigger_num
+										END
+									END
+								END ELSE BEGIN
+									INNER_PATCH_SAVE scripts ~%scripts%~ BEGIN
+										REPLACE_TEXTUALLY ~\(STATS\),\(.+$\)~ ~CheckStat(%buff_target%,0,\2)~
+										REPLACE_TEXTUALLY ~\(SPLSTATE\),\(.+$\)~ ~CheckSpellState(%buff_target%,\2)~
+										REPLACE_TEXTUALLY ~\(STATE\),\(.+$\)~ ~NotStateCheck(%buff_target%,\1_\2)~
+									END
+									TEXT_SPRINT trigger ~%scripts%~
+								END
+							END
+							SET saved=1
+						END
+					END
+				LAM append_script
+			END
+		END
+	END
+
+//自身
+COPY ~.../inlined/blank.baf~ ~%OUTPUT%/c4AIBF00.baf~
+	SPRINT buff_target ~Myself~
+	PATCH_FOR_EACH file IN self_res self self_delay BEGIN
+		PATCH_IF FILE_EXISTS ~%OUTPUT%/buff_base_%file%.baf~ BEGIN
+			APPEND_FILE_EVALUATE ~%OUTPUT%/buff_base_%file%.baf~
+		END
+	END
+	APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
+COMPILE ~%OUTPUT%/c4AIBF00.baf~
+
+//团队
+OUTER_FOR (order=1;order<7;++order) BEGIN
+	COPY ~.../inlined/blank.baf~ ~%OUTPUT%/c4AIBF1%order%.baf~
+	ACTION_IF FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
+		COPY ~.../inlined/blank.baf~ ~%OUTPUT%/c4AIBF2%order%.baf~
+	END
+	
+	OUTER_FOR (i=1;i<7;++i) BEGIN
+		OUTER_SET player_slot=i
+		OUTER_TEXT_SPRINT buff_target ~Player%i%~
+		
+		COPY ~%OUTPUT%/c4AIBF1%order%.baf~ ~%OUTPUT%/c4AIBF1%order%.baf~
+			PATCH_FOR_EACH file IN team_res team BEGIN
+				PATCH_IF FILE_EXISTS ~%OUTPUT%/buff_base_%file%.baf~ BEGIN
+					APPEND_FILE_EVALUATE ~%OUTPUT%/buff_base_%file%.baf~
+				END
+			END
+			
+		ACTION_IF FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
+			COPY ~%OUTPUT%/c4AIBF2%order%.baf~ ~%OUTPUT%/c4AIBF2%order%.baf~
+				APPEND_FILE_EVALUATE ~OUTPUT%/buff_base_team_delay.baf~
+		END
+				
+	END
+
+	COPY ~%OUTPUT%/c4AIBF1%order%.baf~ ~%OUTPUT%/c4AIBF1%order%.baf~
+		PATCH_IF order<6 BEGIN
+			SET next=order+1+10
+			APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_next.baf~
+		END ELSE BEGIN
+			PATCH_IF NOT FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
+				APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
+			END ELSE BEGIN
+				SET next=21
+				APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_next.baf~
+			END
+		END
+	COMPILE ~%OUTPUT%/c4AIBF1%order%.baf~
+		
+	ACTION_IF FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
+		COPY ~%OUTPUT%/c4AIBF2%order%.baf~ ~%OUTPUT%/c4AIBF2%order%.baf~
+			PATCH_IF order<6 BEGIN
+				SET next=order+1+20
+				APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_next.baf~
+			END ELSE APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
+		COMPILE ~%OUTPUT%/c4AIBF2%order%.baf~
+	END
+END

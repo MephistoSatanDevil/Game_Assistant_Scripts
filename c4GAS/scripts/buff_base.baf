@@ -1,0 +1,12 @@
+
+IF
+  HaveSpellRES("%mother%")
+	%delay_check%
+	Global("%spell_var%","Locals",%default%)
+  %trigger%
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("%spell%",%buff_target%)
+    RemoveSpellRES("%mother%")
+    Continue()
+END
