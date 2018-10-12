@@ -79,8 +79,8 @@ END
 IF
 	TriggerOverride(Player1,See([ENEMY]))
   OR(2)
-		HotKey(%selfbuff%)
-		HotKey(%teambuff%)
+		HotKey(%hotkey_selfbuff%)
+		HotKey(%hotkey_teambuff%)
 THEN
   RESPONSE #100
 		DisplayString(Myself,@402)
@@ -90,8 +90,8 @@ END
 IF
 	TriggerOverride(Player2,See([ENEMY]))
   OR(2)
-		HotKey(%selfbuff%)
-		HotKey(%teambuff%)
+		HotKey(%hotkey_selfbuff%)
+		HotKey(%hotkey_teambuff%)
 THEN
   RESPONSE #100
 		DisplayString(Myself,@402)
@@ -101,8 +101,8 @@ END
 IF
 	TriggerOverride(Player3,See([ENEMY]))
   OR(2)
-		HotKey(%selfbuff%)
-		HotKey(%teambuff%)
+		HotKey(%hotkey_selfbuff%)
+		HotKey(%hotkey_teambuff%)
 THEN
   RESPONSE #100
 		DisplayString(Myself,@402)
@@ -112,8 +112,8 @@ END
 IF
 	TriggerOverride(Player4,See([ENEMY]))
   OR(2)
-		HotKey(%selfbuff%)
-		HotKey(%teambuff%)
+		HotKey(%hotkey_selfbuff%)
+		HotKey(%hotkey_teambuff%)
 THEN
   RESPONSE #100
 		DisplayString(Myself,@402)
@@ -123,8 +123,8 @@ END
 IF
 	TriggerOverride(Player5,See([ENEMY]))
   OR(2)
-		HotKey(%selfbuff%)
-		HotKey(%teambuff%)
+		HotKey(%hotkey_selfbuff%)
+		HotKey(%hotkey_teambuff%)
 THEN
   RESPONSE #100
 		DisplayString(Myself,@402)
@@ -134,8 +134,8 @@ END
 IF
 	TriggerOverride(Player6,See([ENEMY]))
   OR(2)
-		HotKey(%selfbuff%)
-		HotKey(%teambuff%)
+		HotKey(%hotkey_selfbuff%)
+		HotKey(%hotkey_teambuff%)
 THEN
   RESPONSE #100
 		DisplayString(Myself,@402)
@@ -144,7 +144,7 @@ END
 
 // buff
 IF
-	HotKey(%selfbuff%)
+	HotKey(%hotkey_selfbuff%)
 	Global("c4AI_ActivateBuff","Locals",1)
 	Global("c4AI_Buff_Start","Locals",0)
 THEN
@@ -155,7 +155,7 @@ THEN
 END
 
 IF
-	HotKey(%teambuff%)
+	HotKey(%hotkey_teambuff%)
 	Global("c4AI_ActivateBuff","Locals",1)
 	Global("c4AI_Start_Buff","Locals",0)
 THEN

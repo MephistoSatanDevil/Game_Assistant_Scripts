@@ -11,7 +11,7 @@ COPY_EXISTING - hidespl.2da override
 		END
 	END
 
-COPY ~%LIBS%/buff_spells.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
+COPY ~%LIBS%/buff_spells.2da~ ~%workspace%/buff_spells_fixed.2da~
 	COUNT_2DA_COLS cols
 	READ_2DA_ENTRIES_NOW rows cols
 	FOR (i=1;i<rows;++i) BEGIN

@@ -1,7 +1,8 @@
 
-@-10000	= ~This mod only support Baldur's Gate Enhanced Edition (with or without Siege of Dragonspear), Baldur's Gate II Enhanced Edition and Baldur's Gate Trilogh Enhanced Edition !~
+@-10000	= ~This mod only support Baldur's Gate Enhanced Edition, Siege of Dragonspear, Baldur's Gate II Enhanced Edition and Baldur's Gate Trilogh Enhanced Edition!~
+@-10001	= ~The core component must be installed first!~
 
-@-0 = ~c4_angel's Game Assistant Scripts Core component~
+@-0 = ~c4_angel's Game Assistant Scripts (c4GAS) Core component~
 @-1 = ~Default hotkeys£ºL for Console£¬N for Self-buffing£¬M for Team-buffing.~
 @-2 = ~Do you want to change the hotkeys? (Y/N)~
 @-3 = ~You have input the wrong key(s), pleas try again.~
@@ -13,4 +14,4 @@ NOTE: the hotkey MUST be only one letter, and a NON-USED hotkey in your game.~
 @-7 = ~Please input the hotkey which start the 1-Key-Buffing process for all team-members. 
 NOTE: the hotkey MUST be only one letter, and a NON-USED hotkey in your game.~
 
-@-10 = ~The process may last for a few minutes, just wait, please.~
+@-100 = ~Reset Hotkeys~

@@ -19,7 +19,7 @@ You may need to reconfigure the settings if you find the scripts are not work as
 @109 = ~No automatic battlesong modal for bards.~
 @110 = ~Thieves/Stalkers activate Hide in Shadows automatically (Default).~
 @111 = ~Thieves/Stalkers don't activate Hide in Shadows automatically.~
-@121 = ~c4_angel's Combat AI script~
+@121 = ~c4GAS Game Assistant Scripts~
 @122 = ~The automatic actions of your characters when action list is empty. Start console with the hotkey for more settings.~
 
 @20	= ~Auto Pause setting.~

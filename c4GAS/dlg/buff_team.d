@@ -3,7 +3,7 @@ ALTER_TRANS c4AIcons
 BEGIN 9 END
 BEGIN ~%trans%~ END
 BEGIN
-"TRIGGER" ~Global("%trans_var%","Global",0)~
+"TRIGGER" ~~
 END
 
 EXTEND_TOP ~c4AIcons~ ~%state%~
