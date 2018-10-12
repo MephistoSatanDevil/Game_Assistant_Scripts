@@ -1,4 +1,4 @@
-[简体中文](https://github.com/Sebastian-c4/Game_Assistant_Scripts) [English](README-EN.md)
+[简体中文](README.md) [English](README-EN.md)
 
 # 瓦斯辅助脚本
 
