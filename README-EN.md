@@ -22,7 +22,7 @@ To use the script, you can:
 
 **NOTE: Except the Auto Pause system, the other two can only work when the AI mod is activated.**
 
-#### Battle AI Script
+### Battle AI Script
 Just like the other AI script, this one controls the character's actions if no command given.
 - Attacks. The script gives you three options: Attack the enemies in his/her weapon range (DEFAULT); Attack the enemies in sight aggressively; No attack action.
 - Attack when invisible or not: NO (DEFAULT); YES
@@ -30,13 +30,13 @@ Just like the other AI script, this one controls the character's actions if no c
 - Bards start BATTLESONG modal automatically, then make attack actions: YES (DEFAULT); NO
 - Thieves/Stalkers try to Hide in Shadows automatically: YES (DEFAULT); NO
 
-#### Auto Pause
+### Auto Pause
 Monitor the stat when characters cast those two kind of physical defence spells, and pause game when effects runs out.  
 These are global setting, and disabled by default.
 - Mage spell StoneSkins and druid spell IronSkins.
 - Protection from Magical Weapons and the Mantle series.
 	
-#### 1-Key-Buffing
+### 1-Key-Buffing
 There are two conditions to start 1-Key-Buffing: 
 - AI mod is ON.
 - Not in a combat, no enemy around any party member.
