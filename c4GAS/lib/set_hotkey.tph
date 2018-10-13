@@ -52,7 +52,7 @@ END ELSE BEGIN
 	OUTER_SPRINT hotkey_teambuff M
 	OUTER_SPRINT sethotkey y
 	
-	ACTION_IF !no_ask BEGIN
+	ACTION_IF !VARIABLE_IS_SET no_ask BEGIN
 		PRINT @-1
 		PRINT @-2
 		ACTION_READLN sethotkey
