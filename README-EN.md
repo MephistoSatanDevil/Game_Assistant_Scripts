@@ -4,7 +4,7 @@
 
 **Author: c4_angel**  
 **Version: v1.2**  
-**Support language: English, Simplified Chinese**
+**Support languages: English, Simplified Chinese**
 
 ## Compatibility and Installation
 - This mod only support Baldur's Gate Enhanced Edition(BG:EE), Siege of Dragonspear(SoD), Baldur's Gate II Enhanced Edition(BG2:EE) and Baldur's Gate Trilogh Enhanced Edition(EET).
