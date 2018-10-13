@@ -26,6 +26,7 @@ SPWI222    0          s_arc      142        163        *          *
 SPWI108    0          s_arc      142        10         *          *
 SPWI209    0          s_arc      142        32         *          *
 SPWI210    0          s_arc      142        37         *          *
+SPWI214    0          s_arc      142        21         *          *
 SPWI310    0          s_arc      142        31         *          STATE,NONDETECTION
 SPWI403    0          s_arc      142        69         *          *
 SPWI418    0          s_arc      142        68         *          *
@@ -79,6 +80,7 @@ SPPR508    0          t_div      142        52         *          *
 SPPR507    0          t_div      142        50         *          *
 SPWI108    0          t_arc      142        10         *          *
 SPWI209    0          t_arc      142        32         *          *
+SPWI214    0          t_arc      142        21         *          *
 SPWI311    0          t_arc      142        11         *          *
 SPWI405    0          t_arc      20         1          *          STATE,IMPROVEDINVISIBILITY
 SPWI414    0          t_arc      142        46         *          *

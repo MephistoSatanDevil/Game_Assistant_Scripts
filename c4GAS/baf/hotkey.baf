@@ -1,8 +1,6 @@
-
 IF
-  HotKey(%tweak%)
+  HotKey(%hotkey_tweak%)
 THEN
   RESPONSE #100
     StartDialogOverride("c4AIcons",Myself)
 END
-

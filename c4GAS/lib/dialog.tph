@@ -4,10 +4,10 @@ ALTER_TLK BEGIN
 	++strref_max
 END
 
-COPY ~.../inlined/blank.2da~ ~%OUTPUT%/buff_spell_dialog.2da~
-APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~name_strref%TAB%level%TAB%type%TAB%default~
+COPY ~.../c4_inlined/blank.2da~ ~%workspace%/buff_spell_dialog.2da~
+APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~name_strref%TAB%level%TAB%type%TAB%default~
 
-COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
+COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 	COUNT_2DA_COLS cols
 	READ_2DA_ENTRIES_NOW rows cols
 	FOR (i=1;i<rows;++i) BEGIN
@@ -31,7 +31,7 @@ COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
 				END ELSE BEGIN
 					ACTION_PHP_EACH lack_spell_names AS file => int BEGIN
 						ACTION_IF ~%file%~ STR_EQ ~%spell%~ BEGIN
-							OUTER_SET ~%spell%_name_str~=int
+							OUTER_SET ~%spell%_name_str~= RESOLVE_STR_REF ((AT ~%int%~))
 						END
 					END
 					ACTION_IF !VARIABLE_IS_SET ~%spell%_name_str~ BEGIN
@@ -41,7 +41,7 @@ COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
 				
 				OUTER_SET name_str = ~%spell%_name_str~
 
-				APPEND_OUTER ~%OUTPUT%/buff_spell_dialog.2da~ ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
+				APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
 				UNLESS ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
 			END
 		END
@@ -50,7 +50,7 @@ COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
 
 COMPILE EVAL ~%DLGS%/c4AIcons.d~
 
-COPY - ~%OUTPUT%/buff_spell_dialog.2da~ ~%OUTPUT%/buff_spell_dialog.2da~
+COPY - ~%workspace%/buff_spell_dialog.2da~ ~%workspace%/buff_spell_dialog.2da~
 	SPRINT prefix @43
 	SPRINT suffix @44
 	COUNT_2DA_COLS cols

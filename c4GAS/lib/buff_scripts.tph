@@ -24,16 +24,16 @@ DEFINE_ACTION_MACRO append_script BEGIN
 		OUTER_SPRINT delay_check ~GlobalTimerExpired("c4AI_Buff_Start_Timer","Locals")~
 	END ELSE OUTER_SPRINT delay_check ~~
 	
-	ACTION_IF NOT FILE_EXISTS ~%OUTPUT%/%file%.baf~ BEGIN
-		COPY ~.../inlined/blank.baf~ ~%OUTPUT%/%file%.baf~
+	ACTION_IF NOT FILE_EXISTS ~%workspace%/%file%.baf~ BEGIN
+		COPY ~.../c4_inlined/blank.baf~ ~%workspace%/%file%.baf~
 	END ELSE BEGIN	
-		COPY ~%OUTPUT%/%file%.baf~ ~%OUTPUT%/%file%.baf~
+		COPY ~%workspace%/%file%.baf~ ~%workspace%/%file%.baf~
 			APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_base.baf~
 	END
 
 END
 
-COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
+COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 	COUNT_2DA_COLS cols
 	READ_2DA_ENTRIES_NOW rows cols
 	FOR (i=1;i<rows;++i) BEGIN
@@ -95,61 +95,61 @@ COPY - ~%OUTPUT%/buff_spells_fixed.2da~ ~%OUTPUT%/buff_spells_fixed.2da~
 	END
 
 //自身
-COPY ~.../inlined/blank.baf~ ~%OUTPUT%/c4AIBF00.baf~
+COPY ~.../c4_inlined/blank.baf~ ~%workspace%/c4AIBF00.baf~
 	SPRINT buff_target ~Myself~
 	PATCH_FOR_EACH file IN self_res self self_delay BEGIN
-		PATCH_IF FILE_EXISTS ~%OUTPUT%/buff_base_%file%.baf~ BEGIN
-			APPEND_FILE_EVALUATE ~%OUTPUT%/buff_base_%file%.baf~
+		PATCH_IF FILE_EXISTS ~%workspace%/buff_base_%file%.baf~ BEGIN
+			APPEND_FILE_EVALUATE ~%workspace%/buff_base_%file%.baf~
 		END
 	END
 	APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
-COMPILE ~%OUTPUT%/c4AIBF00.baf~
+COMPILE ~%workspace%/c4AIBF00.baf~
 
 //团队
 OUTER_FOR (order=1;order<7;++order) BEGIN
-	COPY ~.../inlined/blank.baf~ ~%OUTPUT%/c4AIBF1%order%.baf~
-	ACTION_IF FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
-		COPY ~.../inlined/blank.baf~ ~%OUTPUT%/c4AIBF2%order%.baf~
+	COPY ~.../c4_inlined/blank.baf~ ~%workspace%/c4AIBF1%order%.baf~
+	ACTION_IF FILE_EXISTS ~%workspace%/buff_base_team_delay.baf~ BEGIN
+		COPY ~.../c4_inlined/blank.baf~ ~%workspace%/c4AIBF2%order%.baf~
 	END
 	
 	OUTER_FOR (i=1;i<7;++i) BEGIN
 		OUTER_SET player_slot=i
 		OUTER_TEXT_SPRINT buff_target ~Player%i%~
 		
-		COPY ~%OUTPUT%/c4AIBF1%order%.baf~ ~%OUTPUT%/c4AIBF1%order%.baf~
+		COPY ~%workspace%/c4AIBF1%order%.baf~ ~%workspace%/c4AIBF1%order%.baf~
 			PATCH_FOR_EACH file IN team_res team BEGIN
-				PATCH_IF FILE_EXISTS ~%OUTPUT%/buff_base_%file%.baf~ BEGIN
-					APPEND_FILE_EVALUATE ~%OUTPUT%/buff_base_%file%.baf~
+				PATCH_IF FILE_EXISTS ~%workspace%/buff_base_%file%.baf~ BEGIN
+					APPEND_FILE_EVALUATE ~%workspace%/buff_base_%file%.baf~
 				END
 			END
 			
-		ACTION_IF FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
-			COPY ~%OUTPUT%/c4AIBF2%order%.baf~ ~%OUTPUT%/c4AIBF2%order%.baf~
+		ACTION_IF FILE_EXISTS ~%workspace%/buff_base_team_delay.baf~ BEGIN
+			COPY ~%workspace%/c4AIBF2%order%.baf~ ~%workspace%/c4AIBF2%order%.baf~
 				APPEND_FILE_EVALUATE ~OUTPUT%/buff_base_team_delay.baf~
 		END
 				
 	END
 
-	COPY ~%OUTPUT%/c4AIBF1%order%.baf~ ~%OUTPUT%/c4AIBF1%order%.baf~
+	COPY ~%workspace%/c4AIBF1%order%.baf~ ~%workspace%/c4AIBF1%order%.baf~
 		PATCH_IF order<6 BEGIN
 			SET next=order+1+10
 			APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_next.baf~
 		END ELSE BEGIN
-			PATCH_IF NOT FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
+			PATCH_IF NOT FILE_EXISTS ~%workspace%/buff_base_team_delay.baf~ BEGIN
 				APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
 			END ELSE BEGIN
 				SET next=21
 				APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_next.baf~
 			END
 		END
-	COMPILE ~%OUTPUT%/c4AIBF1%order%.baf~
+	COMPILE ~%workspace%/c4AIBF1%order%.baf~
 		
-	ACTION_IF FILE_EXISTS ~%OUTPUT%/buff_base_team_delay.baf~ BEGIN
-		COPY ~%OUTPUT%/c4AIBF2%order%.baf~ ~%OUTPUT%/c4AIBF2%order%.baf~
+	ACTION_IF FILE_EXISTS ~%workspace%/buff_base_team_delay.baf~ BEGIN
+		COPY ~%workspace%/c4AIBF2%order%.baf~ ~%workspace%/c4AIBF2%order%.baf~
 			PATCH_IF order<6 BEGIN
 				SET next=order+1+20
 				APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_next.baf~
 			END ELSE APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
-		COMPILE ~%OUTPUT%/c4AIBF2%order%.baf~
+		COMPILE ~%workspace%/c4AIBF2%order%.baf~
 	END
 END
