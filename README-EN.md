@@ -1,60 +1,71 @@
 [简体中文](https://github.com/Sebastian-c4/Game_Assistant_Scripts) [English](README-EN.md)
 
-# 瓦斯辅助脚本
+# Game Assistant Scripts
 
-**作者：c4_angel**  
-**版本：v1.2**  
-**支持语言：简体中文，英文**
+**Author: c4_angel**  
+**Version: v1.2**  
+**Support language: English, Simplified Chinese**
 
-## 兼容性及安装说明
-- 脚本支持博德之门增强版（BGEE）、龙矛围攻（SOD）、博德之门2增强版（BG2EE），以及增强版三部曲（EET）
-- 基于脚本的判断需求，本脚本会对游戏内大量法术文件进行无实际效果的处理，为保证脚本正常运行，**必须**在所有引入新法术/技能，或是对后缀为.SPL的文件进行覆盖型修改的模组之后安装，最典型的如法术修订（SR）。
-- 占用3条（目前）SPLSTATE.ids文件的空白条目，如当前游戏环境下无空余空间可能导致本脚本安装失败。
-- 在脚本安装开始时会提示玩家设置热键，一共三个。三个热键为脚本完整工作所必需，请确保跟游戏内自己设置的各种热键无冲突。
+## Compatibility and Installation
+- This mod only support Baldur's Gate Enhanced Edition(BG:EE), Siege of Dragonspear(SoD), Baldur's Gate II Enhanced Edition(BG2:EE) and Baldur's Gate Trilogh Enhanced Edition(EET).
+- The mod will modify almost all of the spells in game (with no actual change to the effect of the spells) for checks in the scripts. So for insurance of the mod works well, it **MUST** be installed **AFTER** any mods which introduce new spell(s) or replace those already existed in game (such as Spell Revision). 
+- The mod append three (in the current version) slots to SPLSTATE.ids. So the mod may fail to install if there is not enough slots.
+- At the beginning of install, the mod will ask the user to set three hotkeys. Also you can set them before install by editing the ini file int the mod folder, or use component 2 to set/change the hotkeys whenever you want.
 
-## 内容介绍
-本脚本目前主要有三大功能：战斗脚本、自动暂停和一键Buff系统。在游戏内选定人物，在开启系统AI（游戏默认热键A，或点击画面右下角的锁型图标切换开启或关闭）的前提下，按下所设置的控制台热键，第一次开启控制台（无所谓是否进行设置）以使脚本生效。
+## WHAT IS IT
+There are three of the script: Battle AI Script, Auto Pause, and a semi-auto buffing system called "1-Key-Buffing".  
+To use the script, you can:
+- Activate the AI mod (default hotkey is "A" to switch AI mod on/off, or click the lock button in the lower right conner of your screen).
+- Select on of your party member.
+- Press the "call console" hotkey you have set. 
+- Follow the guide, set the parameters as you prefer.
 
-**除自动暂停外，脚本其他两大功能均必须在开启了系统AI之后才能正常工作。**
+**NOTE: Except the Auto Pause system, the other two can only work when the AI mod is activated.**
 
-#### 战斗脚本
-控制无指令状态下人物的行为。
-	- 遇敌自动攻击：可设置三种模式：攻击武器范围内的最近敌人（默认）；主动上前攻击视野内的最近敌人；不进行主动攻击
-	- 隐身时攻击状态：不主动攻击（默认）；以上述设定的模式决定攻击行为
-	- 在开启侦测陷阱/超渡时：不主动攻击（默认）；以上述设定的模式决定攻击行为
-	- 吟游诗人自动吟唱（默认）；不自动吟唱（例如无歌曲效果的舞剑士）
-	- 盗贼/潜行者在周围无敌人时自动潜行（默认）；不自动潜行
+#### Battle AI Script
+Just like the other AI script, this one controls the character's actions if no command given.
+- Attacks. The script gives you three options: Attack the enemies in his/her weapon range (DEFAULT); Attack the enemies in sight aggressively; No attack action.
+- Attack when invisible or not: NO (DEFAULT); YES
+- Attack if Detect Traps or Turning Dead modal is activated or not: NO (DEFAULT); YES
+- Bards start BATTLESONG modal automatically, then make attack actions: YES (DEFAULT); NO
+- Thieves/Stalkers try to Hide in Shadows automatically: YES (DEFAULT); NO
 
-#### 自动暂停
-当物理防护法术失效时自动暂停游戏，包括两类。此功能为全局设定，默认禁用。
-- 法师石肤术、德鲁伊铁皮术
-- 防护魔法武器、壁罩术系列
+#### Auto Pause
+Monitor the stat when characters cast those two kind of physical defence spells, and pause game when effects runs out.  
+These are global setting, and disabled by default.
+- Mage spell StoneSkins and druid spell IronSkins.
+- Protection from Magical Weapons and the Mantle series.
 	
-#### 一键Buff系统
-在开启系统AI前提下按下自身或团队Buff热键，脚本自动对自身或队友施放增益类法术。法术施放无间隔。自身Buff类法术绝大多数均为默认自动施放，而团队法术均须先在控制台内设置优先级后才可自动施放。当然团队Buff同样可以将目标设为自己。
-	- 奥术：例如石肤术（仅自身）、幸运术（自身、团队）、高等加速术（仅团队）
-	- 神术：例如信仰铠甲（仅自身）、防死结界（自身、团队）、巨力术（仅团队）
-	- 天赋技能（默认不自动施放）：例如强韧（仅自身）
-	- 延迟施放类（避免阻挡队友的增益法术，延迟一轮施放）：例如法术无效结界（仅自身）
-	- 抗性增强奥术（同时包含自身和团队）：例如防护强酸
-	- 抗性增强神术（同时包含自身和团队）：例如抵抗火焰和寒冷
+#### 1-Key-Buffing
+There are two conditions to start 1-Key-Buffing: 
+- AI mod is ON.
+- Not in a combat, no enemy around any party member.
+If you meet the conditions, you can press the self/team to start the buffing progress. Further instructions will be displayed in the console.
+
+The following type of spells supported: 
+- Arcane spells: e.g. StoneSkins(self only), Luck(both self and team), Improved Haste(party only)
+- Divine spells: e.g. Armor of Faith(self only), Death Ward(both self and team), Champion Strength(party only)
+- Innate spells (disabled by default): e.g. Hardiness(self only)
+- Delayed Spells (to prevent spells cast by party members be protected): e.g. Globe of Invulnerability(self only)
+- Arcane spells provide resistance enchantment (both self and team): e.g. Protection from Acid
+- Arcane spells provide resistance enchantment (both self and team): e.g. Resist Fire and Cold
 	
-	**注意：本功能目前可识别纯增强版、法术修订v3所包含的法术，所支持法术会因当前游戏环境的不同而有所差别。请以游戏内控制台中所列法术为准。**
+**NOTE: In current version, the 1-Key-Buffing can read spells in vanilla BG:EE/BG2:EE, and those introduced/modified by Spell Revision v3. So there may be differences when you install different mods. All supported spells are displayed in the console.**
 
 
-## 更新历史
+## HISTORY
 
 - VERSION 1.2 2018.10.13
-	- 优化mod封装结构
-	- mod目录下新增config-default.ini，用于直接设定热键，方便使用例如BWS等mod安装工具时的自动安装。使用方法见文件内说明。
-	- 新增组件：重置热键，修改热键无须重装mod
-	- 修正个别笔误带来的错误，例如控制台内无法设定天赋法术
-	- 一键Buff内容新增：
-		- 力量术（2级奥术，自身、团队）
-	
+	- Add English readme file.
+	- Improved mod structure.
+	- Add config-default.ini in the mod folder for those users install mods with install tools e.g. BWS.
+	- Add component 2: Reset Hotkeys. User can reconfigure the hotkeys with out reinstall the core componnet.
+	- Fix some typos in the console dialog, e.g. cannot set enable/disable innate spells.
+	- Add Strength (level 2 arcane spell, both self and team) to supported 1-Key-Buffing spells.
+
 - VERSION 1.1 2018.09.12 
-	- 修正使用英文语言安装可能出现的错误
-	- 对话文件笔误修正
-	
-- VERSION 1.0 2018.09.12
-	- 移植完成
+	- Fix an issue when install the mod using English.
+	- Fix some typos in the console dialog.
+
+- VERSION 1.0 2018.09.11
+	- Rewrite c4AI to support Enhance Edition.

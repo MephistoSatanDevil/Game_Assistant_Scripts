@@ -1,5 +1,5 @@
 
-@5 = ~c4_angel's Game Assistant Scripts. 
+@5 = ~Welcome to c4_angel's Game Assistant Scripts. 
 You may need to reconfigure the settings if you find the scripts are not work as expeced during the game or after updating this mod.~
 @1 = ~What do you want?~
 @2 = ~Not now.~
@@ -8,22 +8,22 @@ You may need to reconfigure the settings if you find the scripts are not work as
 
 @10 = ~Combat AI script setting~
 @100 = ~This part set the automatic actions of your characters when action list is empty.~
-@101 = ~Attack only the nearest enemy are in your weapon range.~
-@102 = ~Approach and attack the nearest enemy in vision range.~
+@101 = ~Attack the enemies in your weapon range.~
+@102 = ~Attack the enemies in sight aggressively.~
 @103 = ~No attack action.~
-@104 = ~No attack action when Invisible (Default).~
-@105 = ~Attack the nearest enemy as preset when Invisible.~
-@106 = ~No attack action if Detect Traps or Turning Dead modal is activated (Default).~
-@107 = ~Attack the nearest enemy as preset if Detect Traps or Turning Dead modal is activated.~
-@108 = ~Automatic battlesong modal for bards, then attack the nearest enemy as preset (Default).~
-@109 = ~No automatic battlesong modal for bards.~
-@110 = ~Thieves/Stalkers activate Hide in Shadows automatically (Default).~
-@111 = ~Thieves/Stalkers don't activate Hide in Shadows automatically.~
+@104 = ~Attack when invisible or not: NO (DEFAULT).~
+@105 = ~Attack when invisible or not: YES.~
+@106 = ~Attack if Detect Traps or Turning Dead modal is activated or not: NO (DEFAULT)~
+@107 = ~Attack if Detect Traps or Turning Dead modal is activated or not: YES~
+@108 = ~Bards start BATTLESONG modal automatically, then make attack actions: YES (DEFAULT)~
+@109 = ~Bards start BATTLESONG modal automatically, then make attack actions: NO~
+@110 = ~Thieves/Stalkers try to Hide in Shadows automatically: YES (DEFAULT)~
+@111 = ~Thieves/Stalkers try to Hide in Shadows automatically: NO~
 @121 = ~c4GAS Game Assistant Scripts~
 @122 = ~The automatic actions of your characters when action list is empty. Start console with the hotkey for more settings.~
 
 @20	= ~Auto Pause setting.~
-@201 = ~Monitor the stat when characters cast spells: Stoneskins or Iron Skins, and weapon protection spells like Protection from Magical Weapon, Mantle, Improved Mantle, and Absolute Immunity. Then pause game when effect runs out. These are global setting, and deactivated by default.~
+@201 = ~Monitor the stat when characters cast spells: Stoneskins or Iron Skins, and weapon protection spells like Protection from Magical Weapon, Mantle, Improved Mantle, and Absolute Immunity. Then pause game when effects runs out. These are global setting, and deactivated by default.~
 @202 = ~Enable auto pause for Stoneskins/Iron Skins invalidation.~
 @203 = ~Disable auto pause for Stoneskins/Iron skins invalidation.~
 @204 = ~Enable auto pause for weapon protection spells invalidation.~
@@ -57,14 +57,14 @@ You may need to reconfigure the settings if you find the scripts are not work as
 @426 = ~Go back to set DIVINE RESIST SPELLS~
 
 
-@500 = ~Press hotkey to start 1-Key-Buffing if no enemy arround. All supported and memorized spells will be cast automatically during the progress, and neither spell be cast repeatly when still effective. Tooltips will apear above the character's head when the progress comes to end, before that DO NOT make any action to the character, otherwise script may be interrupted !!!
+@500 = ~Press hotkey to start 1-Key-Buffing if no enemy arround. All enabled and memorized spells will be cast automatically. and no spell will be cast repeatly if still in effect. Tooltips will apear above the character's head when the progress comes to end, before that DO NOT make any action to the character, otherwise script may be interrupted !!!
 
 Please choose which spell you want make change to: ~
 @501 = ~Self-target part.~
 @502 = ~Go back to self-target part.~
 
 
-@600 = ~Press hotkey to start 1-Key-Buffing if no enemy arround. You must have set each function within this console, and spells you need must be memorized. Neither spell will not be cast repeatly when still effective. Tooltips will apear above the character's head when the progress comes to end, before that DO NOT make any action to the character, otherwise script may be interrupted !!!
+@600 = ~Press hotkey to start 1-Key-Buffing if no enemy arround. You must have set each function within this console first. All enabled and memorized spells will be cast automatically. and no spell will be cast repeatly if still in effect. Tooltips will apear above the character's head when the progress comes to end, before that DO NOT make any action to the character, otherwise script may be interrupted !!!
 
 Note: If any NPC have left or joined the party, you should also change your setting of this function.
 
