@@ -226,11 +226,11 @@ ACTION_IF !VARIABLE_IS_SET immutable_initialise BEGIN // only do this once, not 
 	END
 
 	ACTION_IF !VARIABLE_IS_SET ini_file BEGIN
-		OUTER_SPRINT ini_file config-default
+		OUTER_SPRINT ini_file c4GAS-config-default
 	END
 
 	ACTION_IF !VARIABLE_IS_SET user_ini_file BEGIN
-		OUTER_SPRINT user_ini_file config
+		OUTER_SPRINT user_ini_file c4GAS-config
 	END
 
 	//////////////////////////////////////////////////////////////
