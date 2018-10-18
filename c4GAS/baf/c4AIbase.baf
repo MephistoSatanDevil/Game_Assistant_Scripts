@@ -1,4 +1,4 @@
-////// ×Ô¶¯³ª¸è //////
+////// è‡ªåŠ¨å”±æ­Œ //////
 IF
 	// ActionListEmpty()
 	!CheckSpellState(Myself,c4AI_Is_Casting_A_Spell)
@@ -11,7 +11,7 @@ THEN
     BattleSong()
 END
 
-////// ×Ô¶¯Ç±ĞĞÇø¿é //////
+////// è‡ªåŠ¨æ½œè¡ŒåŒºå— //////
 IF
 	ActionListEmpty()
 	!CheckSpellState(Myself,c4AI_Is_Casting_A_Spell)
@@ -30,8 +30,8 @@ THEN
     Hide()
 END
 
-////// ×Ô¶¯¹¥»÷ //////
-//Ä£Ê½1£ºÎäÆ÷¾àÀëÄÚ
+////// è‡ªåŠ¨æ”»å‡» //////
+//æ¨¡å¼1ï¼šæ­¦å™¨è·ç¦»å†…
 IF
   ActionListEmpty()
 	!CheckSpellState(Myself,c4AI_Is_Casting_A_Spell)
@@ -53,7 +53,7 @@ THEN
 		Continue()
 END
 
-//Ä£Ê½2£ºÖ÷¶¯¹¥»÷
+//æ¨¡å¼2ï¼šä¸»åŠ¨æ”»å‡»
 IF
   ActionListEmpty()
 	!CheckSpellState(Myself,c4AI_Is_Casting_A_Spell)
@@ -74,7 +74,7 @@ THEN
 		Continue()
 END
 
-////// Ò»¼ü //////
+////// ä¸€é”® //////
 // nobuff
 IF
 	TriggerOverride(Player1,See([ENEMY]))

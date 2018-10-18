@@ -28,7 +28,7 @@ COPY ~%LIBS%/buff_spells.2da~ ~%workspace%/buff_spells_fixed.2da~
 		END
 		PATCH_IF hide=0 BEGIN
 			PATCH_IF FILE_EXISTS_IN_GAME ~%spell%.spl~ BEGIN
-				//ÑéÖ¤ÓĞĞ§ÇÒÎ´Òş²Ø
+				//éªŒè¯æœ‰æ•ˆä¸”æœªéšè—
 				INNER_ACTION BEGIN
 					COPY_EXISTING - ~%spell%.spl~ override
 						SET valid=0
@@ -56,7 +56,7 @@ COPY ~%LIBS%/buff_spells.2da~ ~%workspace%/buff_spells_fixed.2da~
 		END ELSE SPRINT default ~*~
 		SET_2DA_ENTRY i 1 cols ~%default%~
 		SET_2DA_ENTRY i 6 cols ~%scripts%~
-		//Ä¸·¨ÊõÒÑ´æÔÚÔòÌø¹ı×Ó·¨Êõ, ÑÓ³ÙÀà(·¨Ãâ)³ıÍâ
+		//æ¯æ³•æœ¯å·²å­˜åœ¨åˆ™è·³è¿‡å­æ³•æœ¯, å»¶è¿Ÿç±»(æ³•å…)é™¤å¤–
 		PATCH_IF (IS_AN_INT ~%default%~) && (~%type%~ STRING_CONTAINS_REGEXP ~_del~) && (~%mother%~ STR_EQ ~*~) BEGIN
 			SET $valid_spells(~%spell%~)=1
 		END

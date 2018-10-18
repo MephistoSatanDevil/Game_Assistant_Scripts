@@ -57,17 +57,17 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 								READ_SHORT offset opcode
 								READ_LONG offset+4 param1
 								READ_LONG offset+8 param2
-								//¿¹ÐÔ·¨ÊõÎÞÐë¼ì²âstatsµÈ
+								//æŠ—æ€§æ³•æœ¯æ— é¡»æ£€æµ‹statsç­‰
 								PATCH_IF	(NOT ~%type%~ STRING_CONTAINS_REGEXP ~_res~) && 
 													(opcode=233 || opcode=282 || opcode=328)
 								BEGIN SET opcode=9999 END
-								//#282µÄparam2¼Ó156
+								//#282çš„param2åŠ 156
 								SET param2=(opcode=282) ? param2+156 : param2
-								//ÍÅ¶ÓbuffÄ¬ÈÏ±äÁ¿
+								//å›¢é˜Ÿbuffé»˜è®¤å˜é‡
 								PATCH_IF ~%type%~ STRING_CONTAINS_REGEXP ~s_~ BEGIN
 									TEXT_SPRINT default ~%player_slot%~
 								END
-								//ÒÑÓÐ±ê×¢µÄÖ±½ÓÊ¹ÓÃ
+								//å·²æœ‰æ ‡æ³¨çš„ç›´æŽ¥ä½¿ç”¨
 								PATCH_IF ~%scripts%~ STR_EQ ~*~ BEGIN
 									PHP_EACH trigger_command AS opcode1 => string BEGIN
 										PATCH_IF opcode=opcode1 && !(VARIABLE_IS_SET ~%spell%-%opcode%-%param1%-%param2%~) BEGIN
@@ -94,7 +94,7 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 		END
 	END
 
-//×ÔÉí
+//è‡ªèº«
 COPY ~.../c4_inlined/blank.baf~ ~%workspace%/c4AIBF00.baf~
 	SPRINT buff_target ~Myself~
 	PATCH_FOR_EACH file IN self_res self self_delay BEGIN
@@ -105,7 +105,7 @@ COPY ~.../c4_inlined/blank.baf~ ~%workspace%/c4AIBF00.baf~
 	APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
 COMPILE ~%workspace%/c4AIBF00.baf~
 
-//ÍÅ¶Ó
+//å›¢é˜Ÿ
 OUTER_FOR (order=1;order<7;++order) BEGIN
 	COPY ~.../c4_inlined/blank.baf~ ~%workspace%/c4AIBF1%order%.baf~
 	ACTION_IF FILE_EXISTS ~%workspace%/buff_base_team_delay.baf~ BEGIN

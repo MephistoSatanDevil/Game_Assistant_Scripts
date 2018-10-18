@@ -1,7 +1,7 @@
 
 DEFINE_ACTION_FUNCTION stats BEGIN
 
-	//ʫ�˸������
+	//诗人歌曲检测
 	COPY_EXISTING_REGEXP - ~.*\.spl~ override
 		GET_OFFSET_ARRAY header SPL_V10_HEADERS
 		PHP_EACH header AS int => index BEGIN
@@ -47,7 +47,7 @@ DEFINE_ACTION_FUNCTION stats BEGIN
 			BUT_ONLY
 	END
 
-	//ʩ�����жϣ�ʩ��ʱ�䲻Ϊ0�ķ�������ʩ��Ч�������ñ�ǣ�ʩ����ɺ����
+	//施法中判断：施法时间不为0的法术，在施法效果中设置标记，施法完成后清除
 	LAF CREATE_EMPTY_SPELL STR_VAR name=c4AIcast END
 	COPY_EXISTING c4AIcast.spl override
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=328 target=1 duration=6 parameter2=casting_splstate special=1 END
