@@ -1,3 +1,4 @@
+
 ////// 自动唱歌 //////
 IF
 	// ActionListEmpty()
@@ -164,4 +165,3 @@ THEN
 		SetGlobal("c4AI_Buff_Start","Locals",1)
 		ChangeAIScript("c4AIBF11", CLASS)
 END
-

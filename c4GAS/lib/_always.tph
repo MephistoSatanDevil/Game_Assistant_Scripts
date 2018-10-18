@@ -72,7 +72,7 @@ ACTION_IF !VARIABLE_IS_SET always_once_section BEGIN
 	ACTION_DEFINE_ASSOCIATIVE_ARRAY lack_spell_names BEGIN
 	END
 
-	//splstateÌõÄ¿
+	//splstateæ¡ç›®
 	LAF ADD_IDS_ENTRY STR_VAR idsFile=splstate.ids identifier=~c4AI_Is_Casting_A_Spell~ END
 	OUTER_SET casting_splstate = IDS_OF_SYMBOL (~splstate~ ~c4AI_Is_Casting_A_Spell~)
 
