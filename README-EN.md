@@ -3,20 +3,20 @@
 # Game Assistant Scripts
 
 **Author: c4_angel**  
-**Version: v1.2**  
+**Version: 1.3**  
 **Support languages: English, Simplified Chinese**
 
 ## Compatibility and Installation
 - This mod only support Baldur's Gate Enhanced Edition(BG:EE), Siege of Dragonspear(SoD), Baldur's Gate II Enhanced Edition(BG2:EE) and Baldur's Gate Trilogh Enhanced Edition(EET).
 - The mod will modify almost all of the spells in game (with no actual change to the effect of the spells) for checks in the scripts. So for insurance of the mod works well, it **MUST** be installed **AFTER** any mods which introduce new spell(s) or replace those already existed in game (such as Spell Revision). 
 - The mod append three (in the current version) slots to SPLSTATE.ids. So the mod may fail to install if there is not enough slots.
-- At the beginning of install, the mod will ask the user to set three hotkeys. Also you can set them before install by editing the ini file int the mod folder, or use component 2 to set/change the hotkeys whenever you want.
+- At the beginning of install, the mod will ask the user to set three hotkeys. Also you can set them before install by editing the ini file in the mod folder, or use component 2 to set/change the hotkeys whenever you want.
 
 ## WHAT IS IT
 There are three of the script: Battle AI Script, Auto Pause, and a semi-auto buffing system called "1-Key-Buffing".  
 To use the script, you can:
 - Activate the AI mod (default hotkey is "A" to switch AI mod on/off, or click the lock button in the lower right conner of your screen).
-- Select on of your party member.
+- Select one of your party member.
 - Press the "call console" hotkey you have set. 
 - Follow the guide, set the parameters as you prefer.
 
@@ -54,6 +54,10 @@ The following type of spells supported:
 
 
 ## HISTORY
+
+- VERSION 1.3 2018.10.19
+	- Files convert to UTF8 no BOM.
+	- Add c4GAS prefix to ini file. (ALIEN)
 
 - VERSION 1.2 2018.10.13
 	- Add English readme file.

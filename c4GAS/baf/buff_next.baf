@@ -1,5 +1,4 @@
 
-
 IF
 	Global("c4AI_Buff_Start","Locals",1)
 THEN
