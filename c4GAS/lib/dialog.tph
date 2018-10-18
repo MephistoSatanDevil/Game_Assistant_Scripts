@@ -23,7 +23,7 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 					PATCH_IF name>0 && name<strref_max BEGIN SET ~%spell%_name_str~=name END
 					READ_LONG 0x34 level
 					
-				//×Ó·¨ÊõÎÞÃû×ÖÊ±ÓÃÄ¸·¨ÊõÃû×Ö
+				//å­æ³•æœ¯æ— åå­—æ—¶ç”¨æ¯æ³•æœ¯åå­—
 				ACTION_IF (name<1 || name>=strref_max) && (~%mother%~ STR_CMP ~*~) && (FILE_EXISTS_IN_GAME ~%mother%.spl~) BEGIN
 					COPY_EXISTING - ~%mother%.spl~ override
 						READ_LONG 8 name

@@ -1,19 +1,19 @@
 
 DEFINE_ACTION_FUNCTION initialise BEGIN
 
-	//ºô³ö¿ØÖÆÌ¨½Å±¾
+	//å‘¼å‡ºæ§åˆ¶å°è„šæœ¬
 	LAF run STR_VAR file=call_console file_loc=lib END
 	
-	//×Ô¶¯ÔİÍ£±äÁ¿
+	//è‡ªåŠ¨æš‚åœå˜é‡
 	LAF run STR_VAR file=auto_pause file_loc=lib END
 	
-	//Ê©·¨ÖĞºÍÊ«ÈË¸èÇúÅĞ¶Ï
+	//æ–½æ³•ä¸­å’Œè¯—äººæ­Œæ›²åˆ¤æ–­
 	LAF run STR_VAR file=stats file_loc=lib END
 	
-	//»ù´¡½Å±¾
+	//åŸºç¡€è„šæœ¬
 	LAF run STR_VAR file=base_script file_loc=lib END
 	
-	//Ò»¼ü
+	//ä¸€é”®
 	LAF run STR_VAR file=buff file_loc=lib END
 
 END

@@ -5,10 +5,10 @@ DEFINE_ACTION_FUNCTION reset_hotkeys BEGIN
 	OUTER_SET use_config_file=0
 	INCLUDE ~%LIBS%/set_hotkey.tph~
 
-	//ºô³ö¿ØÖÆÌ¨½Å±¾
+	//å‘¼å‡ºæ§åˆ¶å°è„šæœ¬
 	LAF run STR_VAR file=call_console file_loc=lib END
 	
-	//»ù´¡½Å±¾
+	//åŸºç¡€è„šæœ¬
 	LAF run STR_VAR file=base_script file_loc=lib END
 
 END
