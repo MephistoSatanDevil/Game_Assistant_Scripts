@@ -6,10 +6,10 @@ DEFINE_ACTION_FUNCTION buff BEGIN
 
 	INCLUDE ~%LIBS%/buff_init.tph~
 
-	//脚本创建
+	//鑴氭湰鍒涘缓
 	INCLUDE ~%LIBS%/buff_scripts.tph~
 
-	//对话
+	//瀵硅瘽
 	INCLUDE ~%LIBS%/dialog.tph~
 
 END

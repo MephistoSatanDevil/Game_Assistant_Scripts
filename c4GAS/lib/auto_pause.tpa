@@ -1,7 +1,7 @@
 
 DEFINE_ACTION_FUNCTION auto_pause BEGIN
 
-	//Ê¯·ô
+	//çŸ³è‚¤
 	COPY_EXISTING spwi408.spl override sppr506.spl override
 		LPF GET_UNIQUE_FILE_NAME STR_VAR extension=eff base=~c4AI_AutoPause_SS1~ RET SS1=filename END
 		LPF CLONE_EFFECT INT_VAR match_opcode=218 opcode=177 timing=1 parameter1=0 parameter2=2 STR_VAR resource=~%SS1%~ insert=below END
@@ -17,7 +17,7 @@ DEFINE_ACTION_FUNCTION auto_pause BEGIN
 	COPY_EXISTING ~%SS0SPL%.spl~ override
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=177 target=2 timing=1 parameter1=0 parameter2=2 STR_VAR resource=~%SS0%~ END
 
-	//·ÀÄ§Îä
+	//é˜²é­”æ­¦
 	COPY_EXISTING spwi611.spl override spwi708.spl override spwi808.spl override spwi907.spl override
 		LPF GET_UNIQUE_FILE_NAME STR_VAR extension=eff base=~c4AI_AutoPause_PFMW1~ RET PFMW1=filename END
 		LPF CLONE_EFFECT INT_VAR match_opcode=120 opcode=177 timing=1 parameter1=0 parameter2=2 STR_VAR resource=~%PFMW1%~ insert=below END
