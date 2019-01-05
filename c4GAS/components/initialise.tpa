@@ -1,6 +1,9 @@
 
 DEFINE_ACTION_FUNCTION initialise BEGIN
 
+	//热键设置
+	LAF run STR_VAR file=set_hotkey file_loc=lib version=ask END
+
 	//呼出控制台脚本
 	LAF run STR_VAR file=call_console file_loc=lib END
 	

@@ -1,9 +1,9 @@
-[简体中文](https://github.com/Sebastian-c4/Game_Assistant_Scripts) [English](README-EN.md)
+[简体中文](README.md) [English](README-EN.md)
 
 # 瓦斯辅助脚本
 
 **作者：c4_angel**  
-**版本：1.3**  
+**版本：1.4**  
 **支持语言：简体中文，英文**
 
 ## 兼容性及安装说明
@@ -53,6 +53,10 @@
 
 
 ## 更新历史
+
+- VERSION 1.4 2019.01.05
+	- 修正部分文本错误
+	- 移除重置热键时的冗余
 
 - VERSION 1.3 2018.10.19
 	- 文件编码统一为UTF8 no BOM

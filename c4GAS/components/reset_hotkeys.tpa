@@ -1,9 +1,8 @@
 
 DEFINE_ACTION_FUNCTION reset_hotkeys BEGIN
 
-	OUTER_SET no_ask=1
-	OUTER_SET use_config_file=0
-	INCLUDE ~%LIBS%/set_hotkey.tph~
+	//热键设置
+	LAF run STR_VAR file=set_hotkey file_loc=lib END
 
 	//呼出控制台脚本
 	LAF run STR_VAR file=call_console file_loc=lib END

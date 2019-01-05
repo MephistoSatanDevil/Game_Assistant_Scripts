@@ -11,7 +11,6 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 	COUNT_2DA_COLS cols
 	READ_2DA_ENTRIES_NOW rows cols
 	FOR (i=1;i<rows;++i) BEGIN
-		SET hide=0
 		READ_2DA_ENTRY_FORMER rows i 0 spell
 		READ_2DA_ENTRY_FORMER rows i 1 default
 		READ_2DA_ENTRY_FORMER rows i 2 type

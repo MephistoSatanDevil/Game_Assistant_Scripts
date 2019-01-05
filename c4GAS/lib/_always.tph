@@ -78,8 +78,5 @@ ACTION_IF !VARIABLE_IS_SET always_once_section BEGIN
 
 	LAF ADD_IDS_ENTRY STR_VAR idsFile=splstate.ids identifier=~c4AI_Battle_Song~ END
 	OUTER_SET song_splstate = IDS_OF_SYMBOL (~splstate~ ~c4AI_Battle_Song~)
-	
-	//hotkey
-	INCLUDE ~%LIBS%/set_hotkey.tph~
 
 END
