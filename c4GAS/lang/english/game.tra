@@ -1,6 +1,6 @@
 
 @5 = ~Welcome to c4_angel's Game Assistant Scripts. 
-You may need to reconfigure the settings if you find the scripts are not work as expeced during the game or after updating this mod.~
+You may need to reconfigure the settings if you find the scripts are not work as expected during the game or after updating this mod.~
 @1 = ~What do you want?~
 @2 = ~Not now.~
 @3 = ~Back to main console panel.~
@@ -28,8 +28,8 @@ You may need to reconfigure the settings if you find the scripts are not work as
 @203 = ~Disable auto pause for Stoneskins/Iron skins invalidation.~
 @204 = ~Enable auto pause for weapon protection spells invalidation.~
 @205 = ~Disable auto pause for Protection from Magical Weapon invalidation.~
-@206 = ~AUTO PAUSE: Stoneskins/Iron Skins just runs out.~
-@207 = ~AUTO PAUSE: Weapon protection spells just runs out.~
+@206 = ~AUTO PAUSE: Stoneskins/Iron Skins just expired.~
+@207 = ~AUTO PAUSE: Weapon protection spells just expired.~
 
 @30 = ~Disable 1-Key-Buffing function.~
 @31 = ~Enable 1-Key-Buffing function.~

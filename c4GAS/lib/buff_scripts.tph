@@ -22,8 +22,6 @@ DEFINE_ACTION_MACRO append_script BEGIN
 	
 	ACTION_IF NOT ~%type%~ STRING_CONTAINS_REGEXP ~_del~ BEGIN
 		OUTER_SPRINT file ~%file%~^~_delay~
-		// OUTER_SPRINT delay_check ~GlobalTimerExpired("c4AI_Buff_Start_Timer","Locals")~
-	// END ELSE OUTER_SPRINT delay_check ~~
 	END
 	
 	ACTION_IF NOT FILE_EXISTS ~%workspace%/%file%.baf~ BEGIN
@@ -123,7 +121,6 @@ ACTION_IF FILE_EXISTS ~%workspace%/buff_base_self_delay.baf~ BEGIN
 	COPY ~.../c4_inlined/blank.baf~ ~%workspace%/c4AIBF01.baf~
 		APPEND_FILE_EVALUATE ~%workspace%/buff_base_self_delay.baf~
 		APPEND_FILE_EVALUATE ~%SCRIPTS%/buff_restore.baf~
-		// REPLACE_TEXTUALLY ~Continue()~ ~~
 	COMPILE ~%workspace%/c4AIBF01.baf~
 END
 
