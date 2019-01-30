@@ -89,24 +89,24 @@ IF ~~ THEN BEGIN Buff_Self
   SAY @500
   ++ @3 GOTO MainMenu
   ++ @601 GOTO Buff_Team
-  + ~Global("c4AI_Arcane_Self_Here", "Global", 1)~ + @411 GOTO Arcane_Self
-  + ~Global("c4AI_Divine_Self_Here", "Global", 1)~ + @412 GOTO Divine_Self
-  + ~Global("c4AI_Innate_Self_Here", "Global", 1)~ + @413 GOTO Innate_Self
-  + ~Global("c4AI_Delay_Self_Here", "Global", 1)~ + @414 GOTO Delay_Self
-  + ~Global("c4AI_ResistArcane_Self_Here", "Global", 1)~ + @415 GOTO ResistArcane_Self
-  + ~Global("c4AI_ResistDivine_Self_Here", "Global", 1)~ + @416 GOTO ResistDivine_Self
+  + ~False()~ + @411 GOTO Arcane_Self
+  + ~False()~ + @412 GOTO Divine_Self
+  + ~False()~ + @413 GOTO Innate_Self
+  + ~False()~ + @414 GOTO Delay_Self
+  + ~False()~ + @415 GOTO ResistArcane_Self
+  + ~False()~ + @416 GOTO ResistDivine_Self
 END
 
 IF ~~ THEN BEGIN Buff_Team
   SAY @600
   ++ @3 GOTO MainMenu
   ++ @501 GOTO Buff_Self
-  + ~Global("c4AI_Arcane_Team_Here", "Global", 1)~ + @411 GOTO Arcane_Team
-  + ~Global("c4AI_Divine_Team_Here", "Global", 1)~ + @412 GOTO Divine_Team
-  + ~Global("c4AI_Innate_Team_Here", "Global", 1)~ + @413 GOTO Innate_Team
-  + ~Global("c4AI_Delay_Team_Here", "Global", 1)~ + @414 GOTO Delay_Team
-  + ~Global("c4AI_ResistArcane_Team_Here", "Global", 1)~ + @415 GOTO ResistArcane_Team
-  + ~Global("c4AI_ResistDivine_Team_Here", "Global", 1)~ + @416 GOTO ResistDivine_Team
+  + ~False()~ + @411 GOTO Arcane_Team
+  + ~False()~ + @412 GOTO Divine_Team
+  + ~False()~ + @413 GOTO Innate_Team
+  + ~False()~ + @414 GOTO Delay_Team
+  + ~False()~ + @415 GOTO ResistArcane_Team
+  + ~False()~ + @416 GOTO ResistDivine_Team
 END
 
 IF ~~ THEN BEGIN Arcane_Self
