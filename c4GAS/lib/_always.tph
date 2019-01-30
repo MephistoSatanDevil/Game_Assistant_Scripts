@@ -8,9 +8,13 @@ ACTION_IF !VARIABLE_IS_SET always_once_section BEGIN
 	
 	INCLUDE ~%LIBS%/_A7functions.tpa~
 	INCLUDE ~%LIBS%/_functions.tpa~
+	INCLUDE ~%LIBS%/set_hotkey.tpa~
 
-	OUTER_SET SRv3 = (FILE_EXISTS ~override/dvsrv3.mrk~) ? 1 : 0
-	OUTER_SET SRv4 = (FILE_EXISTS ~override/dvsrv4here.mrk~) ? 1 : 0
+	OUTER_SET C4MODS = 1
+	OUTER_SET SR3 = (FILE_EXISTS ~override/dvsrv3.mrk~) ? 1 : 0
+	OUTER_SET SR4 = (FILE_EXISTS ~override/dvsrv4here.mrk~) ? 1 : 0
+	OUTER_SET SRR	 = (FILE_EXISTS ~override/dvsrr.mrk~) ? 1 : 0
+	OUTER_SET IA6 = (FILE_EXISTS_IN_GAME ~s!sw04.itm~) ? 1 : 0
 
 	ACTION_DEFINE_ASSOCIATIVE_ARRAY dialog_state BEGIN
 		s_arc			=> 10

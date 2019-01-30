@@ -1,7 +1,8 @@
 
 IF
-	Global("c4AI_Buff_Start","Locals",1)
-	GlobalTimerExpired("c4AI_Buff_Start_Timer","Locals")
+	True()
+	// Global("c4AI_Buff_Start","Locals",1)
+	// GlobalTimerExpired("c4AI_Buff_Start_Timer","Locals")
 THEN
 	RESPONSE #100
 		DisplayStringHead(Myself,@401)

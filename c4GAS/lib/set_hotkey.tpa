@@ -1,5 +1,5 @@
 
-DEFINE_ACTION_FUNCTION set_hotkey BEGIN
+DEFINE_ACTION_FUNCTION set_hotkey INT_VAR ask=0 RET hotkey_tweak hotkey_selfbuff hotkey_teambuff BEGIN
 
 	DEFINE_ACTION_FUNCTION verify_hotkeys
 		STR_VAR key_1=""
@@ -40,9 +40,9 @@ DEFINE_ACTION_FUNCTION set_hotkey BEGIN
 			STR_VAR key_1="%hotkey_tweak%"
 							key_2="%hotkey_selfbuff%"
 							key_3="%hotkey_teambuff%"
-							default_1="L"
-							default_2="N"
-							default_3="M"
+							// default_1="L"
+							// default_2="N"
+							// default_3="M"
 			RET			hotkey_tweak=key_1
 							hotkey_selfbuff=key_2
 							hotkey_teambuff=key_3
@@ -53,7 +53,7 @@ DEFINE_ACTION_FUNCTION set_hotkey BEGIN
 		OUTER_SPRINT hotkey_selfbuff N
 		OUTER_SPRINT hotkey_teambuff M
 		
-		ACTION_IF ~%version%~ STR_EQ ~ask~ BEGIN
+		ACTION_IF ask BEGIN
 			PRINT @-1
 			PRINT @-2
 			ACTION_READLN sethotkey
@@ -64,7 +64,7 @@ DEFINE_ACTION_FUNCTION set_hotkey BEGIN
 			END
 		END ELSE OUTER_SPRINT sethotkey y
 
-		ACTION_IF NOT ~%sethotkey%~ STRING_CONTAINS_REGEXP ~^[Yy]$~ BEGIN
+		ACTION_IF ~%sethotkey%~ STR_EQ y BEGIN
 
 			PRINT @-4
 			ACTION_READLN hotkey_tweak

@@ -2,19 +2,16 @@
 DEFINE_ACTION_FUNCTION initialise BEGIN
 
 	//热键设置
-	LAF run STR_VAR file=set_hotkey file_loc=lib version=ask END
+	LAF set_hotkey INT_VAR ask=1 RET hotkey_tweak hotkey_selfbuff hotkey_teambuff END
 
-	//呼出控制台脚本
-	LAF run STR_VAR file=call_console file_loc=lib END
+	//游戏内热键
+	LAF run STR_VAR file=hotkey_ingame file_loc=lib END
 	
 	//自动暂停变量
 	LAF run STR_VAR file=auto_pause file_loc=lib END
 	
 	//施法中和诗人歌曲判断
 	LAF run STR_VAR file=stats file_loc=lib END
-	
-	//基础脚本
-	LAF run STR_VAR file=base_script file_loc=lib END
 	
 	//一键
 	LAF run STR_VAR file=buff file_loc=lib END

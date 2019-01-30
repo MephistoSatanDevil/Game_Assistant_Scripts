@@ -7,8 +7,8 @@ BEGIN
 END
 
 EXTEND_TOP ~c4AIcons~ ~%state%~
-  ++ ~%spell_name%~ FLAGS 512 + set
-  // + ~HaveKnownSpellRES("%spell%")~ + ~%spell_name%~ FLAGS 512 + set
+  // ++ ~%spell_name%~ FLAGS 512 + set
+  + ~HaveKnownSpellRES("%spell%")~ + ~%spell_name%~ FLAGS 512 + set
 END
 
 APPEND ~c4AIcons~
