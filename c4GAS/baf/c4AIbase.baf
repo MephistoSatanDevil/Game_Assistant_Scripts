@@ -147,21 +147,15 @@ END
 IF
 	HotKey(%hotkey_selfbuff%)
 	Global("c4AI_ActivateBuff","Locals",1)
-	Global("c4AI_Buff_Start","Locals",0)
 THEN
-	RESPONSE #100		
-		SetGlobalTimer("c4AI_Buff_Start_Timer","Locals",6)
-		SetGlobal("c4AI_Buff_Start","Locals",1)
+	RESPONSE #100
 		ChangeAIScript("c4AIBF00", CLASS)
 END
 
 IF
 	HotKey(%hotkey_teambuff%)
 	Global("c4AI_ActivateBuff","Locals",1)
-	Global("c4AI_Start_Buff","Locals",0)
 THEN
-	RESPONSE #100		
-		SetGlobalTimer("c4AI_Buff_Start_Timer","Locals",6)
-		SetGlobal("c4AI_Buff_Start","Locals",1)
+	RESPONSE #100
 		ChangeAIScript("c4AIBF11", CLASS)
 END

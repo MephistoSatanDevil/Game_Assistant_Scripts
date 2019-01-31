@@ -1,7 +1,7 @@
 BACKUP ~_c4mods_external/c4GAS/backup~
 AUTHOR ~c4demon@gmail.com~
 
-VERSION ~v1.3~
+VERSION ~v1.4~
 AUTO_EVAL_STRINGS
 
 README ~c4GAS/lang/%LANGUAGE%/readme.pdf~
@@ -37,6 +37,7 @@ LAF run STR_VAR file=initialise file_loc=components tra=game END
 BEGIN  @-100
 DESIGNATED 100
 REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~c4AIcons.dlg~ @-10001
+REQUIRE_PREDICATE NOT VARIABLE_IS_SET ~always_once_section~ ~~
 NO_LOG_RECORD
 
 LAF run STR_VAR file=reset_hotkeys file_loc=components tra=game END

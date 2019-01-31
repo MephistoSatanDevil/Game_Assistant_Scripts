@@ -508,11 +508,12 @@ BEGIN
 				&&  (savingthrow_		= match_savingthrow 				|| match_savingthrow 		= 999999)
 				&&  (savebonus_			= match_savebonus 					|| match_savebonus 			= 999999)
 				&&  (special_	 			= match_special		 					|| match_special 				= 999999)
-				&& 	((~%resource_%~ STR_EQ ~%match_resource%~) 	|| (~%match_resource%~ STR_EQ ~SAME~))
+				&& 	((~%match_resource%~ STR_EQ ~%resource_%~) 	|| (~%match_resource%~ STR_EQ ~SAME~))
 			BEGIN
 			
 				/* set new value */
 				//parameter1和savebonus去掉倍数不为0的判断, 用于接受ALTER_EFFECT负值无法生效
+				//2019.01.14：全部去掉倍数不为0时的判断
 				
         // PATCH_IF multi_parameter1 != 0 THEN BEGIN
 					PATCH_IF parameter1 != 999999 BEGIN
@@ -522,21 +523,21 @@ BEGIN
 					END
 				// END
 				
-        PATCH_IF multi_duration != 0 THEN BEGIN
+        // PATCH_IF multi_duration != 0 THEN BEGIN
 					PATCH_IF duration != 999999 BEGIN
 						WRITE_LONG offset+0xe duration	+ m*multi_duration
 					END ELSE BEGIN
 						WRITE_LONG offset+0xe duration_	+ m*multi_duration
 					END
-				END
+				// END
 				
-        PATCH_IF multi_dicenumber != 0 THEN BEGIN
+        // PATCH_IF multi_dicenumber != 0 THEN BEGIN
 					PATCH_IF dicenumber != 999999 BEGIN
 						WRITE_LONG offset+0x1c dicenumber	+ m*multi_dicenumber
 					END ELSE BEGIN
 						WRITE_LONG offset+0x1c dicenumber_	+ m*multi_dicenumber
 					END
-				END
+				// END
 				
         // PATCH_IF multi_savebonus != 0 THEN BEGIN
 					PATCH_IF savebonus != 999999 BEGIN
@@ -546,21 +547,21 @@ BEGIN
 					END
 				// END
 				
-        PATCH_IF multi_probability1 != 0 THEN BEGIN
+        // PATCH_IF multi_probability1 != 0 THEN BEGIN
 					PATCH_IF probability1 != 999999 BEGIN
 						WRITE_BYTE offset+0x12 probability1		+ m*multi_probability1
 					END ELSE BEGIN
 						WRITE_BYTE offset+0x12 probability1_	+ m*multi_probability1
 					END
-				END
+				// END
 				
-        PATCH_IF multi_probability2 != 0 THEN BEGIN
+        // PATCH_IF multi_probability2 != 0 THEN BEGIN
 					PATCH_IF probability2 != 999999 BEGIN
 						WRITE_BYTE offset+0x13 probability2		+ m*multi_probability2
 					END ELSE BEGIN
 						WRITE_BYTE offset+0x13 probability2_	+ m*multi_probability2
 					END
-				END
+				// END
 				
 				/* resource and suffix */
 				/* when not enough suffixes, use the previous one instead of nothing */
@@ -729,40 +730,80 @@ END
 
 /* **************************************** */
 
-DEFINE_ACTION_FUNCTION create_observer STR_VAR name=~~ conditions=~True()~ BEGIN
 <<<<<<<< .../c4_inlined/create_observer_baldur.baf
 IF
 	InPartyAllowDead(Player%slot%)
 	%conditions%
-	// !Exists("%name%%slot%")
-	!GlobalTimerNotExpired("%name%%slot%_Exists_Timer","Global")
+	// !Exists("%name%%c4obvNUM%")
+	!GlobalTimerNotExpired("%name%%c4obvNUM%_Exists_Timer","Global")
 THEN
 	RESPONSE #100
-		CreateCreatureImpassable("%name%%slot%",[1.1],0)
+		CreateCreatureImpassable("%name%%c4obvNUM%",[1.1],0)
 		Continue()
 END
 >>>>>>>>
+
 <<<<<<<< .../c4_inlined/observer.baf
 IF
-	!GlobalTimerNotExpired("%name%%slot%_Exists_Timer","Global")
+	!GlobalTimerNotExpired("%name%%c4obvNUM%_Exists_Timer","Global")
 	%conditions%
 THEN
 	RESPONSE #100
-		SetGlobalTimer("%name%%slot%_Exists_Timer","Global",1)
+		SetGlobalTimer("%name%%c4obvNUM%_Exists_Timer","Global",3)
 END
 
 IF
-	!GlobalTimerNotExpired("%name%%slot%_Exists_Timer","Global")
+	!GlobalTimerNotExpired("%name%%c4obvNUM%_Exists_Timer","Global")
 THEN
 	RESPONSE #100
 		DestroySelf()
 END
 >>>>>>>>
 
+DEFINE_ACTION_FUNCTION remove_observer INT_VAR total=6 remove_script=1 STR_VAR name=~~ conditions=~~ BEGIN
+	ACTION_IF total != 6 BEGIN
+		OUTER_SPRINT c4obvNUM ~~
+		OUTER_SET total=1
+	END
+	
+	OUTER_FOR (slot=1;slot<=total;slot+=1) BEGIN
+		ACTION_IF total=6 BEGIN OUTER_SET c4obvNUM=slot END
+		
+		COPY_EXISTING blank.bcs ~override/blank2.bcs~
+		EXTEND_BOTTOM blank2.bcs ~.../c4_inlined/create_observer_baldur.baf~ EVAL EVAL
+		COPY_EXISTING_REGEXP ~baldur.*\.bcs~ override
+			R_B_B ~override/blank2.bcs~ ~override/blank.bcs~ ON_MISMATCH END
+			BUT_ONLY
+		DELETE ~override/blank2.bcs~
+	
+		ACTION_IF remove_script BEGIN
+			ACTION_IF FILE_EXISTS ~override/%name%%c4obvNUM%.bcs~ BEGIN
+				DELETE ~override/%name%%c4obvNUM%.bcs~
+			END
+			ACTION_IF FILE_EXISTS_IN_GAME ~%name%%c4obvNUM%.bcs~ BEGIN
+				DISABLE_FROM_KEY ~%name%%c4obvNUM%.bcs~
+			END
+		END
+	END
+END
+
+DEFINE_ACTION_FUNCTION create_observer INT_VAR total=6 create_script=1 STR_VAR name=~~ conditions=~~ BEGIN
+	OUTER_SET maxLength = 7
+	ACTION_IF total != 6 BEGIN
+		OUTER_SPRINT c4obvNUM ~~
+		OUTER_SET maxLength = 8
+		OUTER_SET total=1
+	END
+
 	OUTER_SET namelength = STRING_LENGTH ~%name%~
-	ACTION_IF namelength>0 && namelength<8 BEGIN
-		OUTER_FOR (slot=1;slot<7;slot+=1) BEGIN
-			COPY_EXISTING bird.cre ~override\%name%%slot%.cre~
+	ACTION_IF namelength>0 && namelength<=maxLength BEGIN
+		LAF remove_observer INT_VAR remove_script=0 total STR_VAR name conditions END
+		COPY_EXISTING blank.bcs ~override/c4obvtmp.bcs~
+		
+		OUTER_FOR (slot=1;slot<=total;slot+=1) BEGIN
+			ACTION_IF total=6 BEGIN OUTER_SET c4obvNUM=slot END
+		
+			COPY_EXISTING bird.cre ~override\%name%%c4obvNUM%.cre~
 				LPF ADD_CRE_EFFECT INT_VAR opcode = 293 timing = 9 target = 1 parameter2 = 1 END
 				LPF ADD_CRE_EFFECT INT_VAR opcode = 66 timing = 9 target = 1 parameter1 = 255 END
 				LPF ADD_CRE_EFFECT INT_VAR opcode = 287 timing = 9 target = 1 END
@@ -773,97 +814,23 @@ END
 				WRITE_BYTE 0x53 1
 				WRITE_BYTE 0x270 0x80
 				WRITE_ASCIIE 0xa4 ~~ #400
-				WRITE_ASCIIE 0x248 ~%name%%slot%~ #40
-				WRITE_ASCIIE 0x280 ~%name%%slot%~ #32
-			COPY_EXISTING blank.bcs ~override/c4obvtmp.bcs~
+				WRITE_ASCIIE 0x248 ~%name%%c4obvNUM%~ #40
+				WRITE_ASCIIE 0x280 ~%name%%c4obvNUM%~ #32
 			EXTEND_BOTTOM ~c4obvtmp.bcs~ ~.../c4_inlined/create_observer_baldur.baf~ EVAL EVAL
-			COPY_EXISTING_REGEXP GLOB ~baldur.*\.bcs~ override
-				R_B_B ~override/c4obvtmp.bcs~ ~override/blank.bcs~ ON_MISMATCH END
-			BUT_ONLY
-			EXTEND_BOTTOM_REGEXP ~baldur.*\.bcs~ ~.../c4_inlined/create_observer_baldur.baf~ EVAL EVAL
-			MOVE ~override/c4obvtmp.bcs~ ~%external_data%/%name%%slot%_baldur.bcs~
 			
-			COPY_EXISTING blank.bcs ~override/%name%%slot%.bcs~
-			EXTEND_BOTTOM ~override/%name%%slot%.bcs~ ~.../c4_inlined/observer.baf~ EVAL EVAL
+			ACTION_IF create_script BEGIN
+				COPY_EXISTING blank.bcs ~override/%name%%c4obvNUM%.bcs~
+				EXTEND_BOTTOM ~override/%name%%c4obvNUM%.bcs~ ~.../c4_inlined/observer.baf~ EVAL EVAL
+			END
 		END
-	END ELSE BEGIN
-		PRINT ~Wrong creature name specified !!~
-		AT_NOW ~pause~
-	END
-END
-
-
-/* **************************************** */
-
-DEFINE_ACTION_FUNCTION create_one_observer STR_VAR name=~~ conditions=~~ BEGIN
-<<<<<<<< .../c4_inlined/create_one_observer_baldur1.baf
-IF
-	InPartyAllowDead(Player1)
-	%conditions%
-	!Exists("%name%")
-THEN
-	RESPONSE #100
-		CreateCreatureImpassable("%name%",[1.1],0)
-		Continue()
-END
->>>>>>>>
-
-	OUTER_SET namelength = STRING_LENGTH ~%name%~
-	ACTION_IF namelength>0 && namelength<9 BEGIN
-		COPY_EXISTING bird.cre ~override\%name%.cre~
-			LPF ADD_CRE_EFFECT INT_VAR opcode = 293 timing = 9 target = 1 parameter2 = 1 END
-			LPF ADD_CRE_EFFECT INT_VAR opcode = 66 timing = 9 target = 1 parameter1 = 255 END
-			LPF ADD_CRE_EFFECT INT_VAR opcode = 287 timing = 9 target = 1 END
-			LPF ADD_CRE_EFFECT INT_VAR opcode = 310 timing = 9 target = 1 parameter2 = 1 END
-			WRITE_LONG 0x8 ~-1~
-			WRITE_LONG 0xc ~-1~
-			WRITE_LONG 0x28 0xc500
-			WRITE_BYTE 0x53 1
-			WRITE_BYTE 0x270 0x80
-			WRITE_ASCIIE 0xa4 ~~ #400
-			WRITE_ASCIIE 0x248 ~%name%~ #40
-			WRITE_ASCIIE 0x280 ~%name%~ #32
-		COPY_EXISTING blank.bcs ~override/c4obvtmp.bcs~
-		EXTEND_BOTTOM ~c4obvtmp.bcs~ ~.../c4_inlined/create_one_observer_baldur1.baf~ EVAL EVAL
-		COPY_EXISTING_REGEXP GLOB ~baldur.*\.bcs~ override
-			R_B_B ~override/c4obvtmp.bcs~ ~override/blank.bcs~ ON_MISMATCH END
-		BUT_ONLY
-		EXTEND_BOTTOM_REGEXP ~baldur.*\.bcs~ ~.../c4_inlined/create_one_observer_baldur1.baf~ EVAL EVAL
-		MOVE ~override/c4obvtmp.bcs~ ~%external_data%/%name%_baldur.bcs~
 		
-		COPY_EXISTING blank.bcs ~override/%name%.bcs~
+		EXTEND_TOP_REGEXP ~baldur.*\.bcs~ ~override/c4obvtmp.bcs~
+		DELETE ~override/c4obvtmp.bcs~
+			
 	END ELSE BEGIN
 		PRINT ~Wrong creature name specified !!~
 		AT_NOW ~pause~
 	END
-END
-
-
-/* **************************************** */
-
-DEFINE_ACTION_FUNCTION deactivate_observer STR_VAR name=~~ BEGIN
-<<<<<<<< .../c4_inlined/clear_ob.baf
-IF
-	True()
-THEN
-	RESPONSE #100
-		DestroySelf()
-END
->>>>>>>>
-	
-	COPY_EXISTING_REGEXP ~baldur.*\.bcs~ override
-		DECOMPILE_AND_PATCH BEGIN
-			REPLACE_TEXTUALLY ~!Exists("%name%")~ ~False() !Exists("%name%")~
-		END
-	BUT_ONLY
-	
-	COMPILE ~.../c4_inlined/clear_ob.baf~
-	
-	ACTION_IF FILE_EXISTS_IN_GAME ~%name%.bcs~ BEGIN
-		COPY_EXISTING clear_ob.bcs ~override/%name%.bcs~
-	END
-	
-	DELETE ~override/clear_ob.bcs~
 END
 
 
