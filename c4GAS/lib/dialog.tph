@@ -47,8 +47,8 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 				OUTER_SET name_str = ~%spell%_name_str~
 
 				ACTION_IF ~%mother%~ STR_EQ ~*~ BEGIN OUTER_SPRINT mother ~%spell%~ END
-				APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~%mother%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
-				UNLESS ~%mother%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
+				APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
+				UNLESS ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
 			END
 		END
 	END
