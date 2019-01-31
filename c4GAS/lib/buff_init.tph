@@ -40,7 +40,7 @@ COPY ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 		PHP_EACH ignore AS hidden => int BEGIN
 			PATCH_IF (~%hidden%~ STR_EQ ~%spell%~) BEGIN SET do=0 END
 		END
-		//存在、未被隐藏，有效且最大持续时间>=30
+		//存在、未被隐藏，有效且最大持续时间>=30或永久(#146)
 		PATCH_IF do && (FILE_EXISTS_IN_GAME ~%spell%.spl~) BEGIN
 			INNER_ACTION BEGIN
 				COPY_EXISTING - ~%spell%.spl~ override
@@ -52,8 +52,11 @@ COPY ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 						PHP_EACH effect AS int => offset BEGIN
 							READ_SHORT offset opcode
 							READ_LONG offset+8 param2
+							READ_BYTE offset+0xc timing
 							READ_LONG offset+0xe duration
-							PATCH_IF valid=0 && (opcode=check_op || check_op=~-1~) && duration>=30 BEGIN
+							PATCH_IF valid=0 && (opcode=check_op || check_op=~-1~)
+								&& ((timing=1 || timing=9) || (timing=0 && duration>=30))
+							BEGIN
 								PATCH_IF check_p2=param2 || check_p2=~-1~ BEGIN	SET valid=1	END
 							END
 							PATCH_IF stats=0 && (opcode=233 || opcode=282 || opcode=328) BEGIN SET stats=1 END
