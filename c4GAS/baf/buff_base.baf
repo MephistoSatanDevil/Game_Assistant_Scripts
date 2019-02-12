@@ -6,7 +6,7 @@ IF
   %trigger%
 THEN
   RESPONSE #100
-		SetGlobalTimer("%timer%","Locals",12)
+		SetGlobalTimer("%timer%","Locals",30)
     ReallyForceSpellRES("%spell%",%buff_target%)
     RemoveSpellRES("%mother%")
     Continue()

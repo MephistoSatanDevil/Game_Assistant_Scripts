@@ -87,6 +87,7 @@ COPY ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 		END
 	END
 
+/* 不进行状态判断
 ACTION_PHP_EACH need_patch AS spell => param2 BEGIN
 	LAF ADD_IDS_ENTRY STR_VAR idsFile=splstate.ids identifier=~c4AI_Buff_%spell%~ END
 	OUTER_SET value = IDS_OF_SYMBOL (~splstate~ ~c4AI_Buff_%spell%~)
@@ -97,3 +98,4 @@ ACTION_PHP_EACH need_patch AS spell => param2 BEGIN
 		END
 		BUT_ONLY
 END
+*/

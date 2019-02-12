@@ -2,12 +2,9 @@
 DEFINE_ACTION_FUNCTION reset_hotkeys BEGIN
 
 	//热键设置
-	LAF run STR_VAR file=set_hotkey file_loc=lib END
+	LAF set_hotkey INT_VAR ask=0 RET hotkey_tweak hotkey_selfbuff hotkey_teambuff END
 
-	//呼出控制台脚本
-	LAF run STR_VAR file=call_console file_loc=lib END
-	
-	//基础脚本
-	LAF run STR_VAR file=base_script file_loc=lib END
+	//游戏内热键
+	LAF run STR_VAR file=hotkey_ingame file_loc=lib END
 
 END

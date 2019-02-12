@@ -5,7 +5,7 @@ ALTER_TLK BEGIN
 END
 
 COPY ~.../c4_inlined/blank.2da~ ~%workspace%/buff_spell_dialog.2da~
-APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~name_strref%TAB%level%TAB%type%TAB%default~
+APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~name_strref%TAB%level%TAB%type%TAB%default%TAB%mother~
 
 COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 	COUNT_2DA_COLS cols
@@ -47,8 +47,8 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 				OUTER_SET name_str = ~%spell%_name_str~
 
 				ACTION_IF ~%mother%~ STR_EQ ~*~ BEGIN OUTER_SPRINT mother ~%spell%~ END
-				APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
-				UNLESS ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%~
+				APPEND_OUTER ~%workspace%/buff_spell_dialog.2da~ ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%%TAB%%mother%~
+				UNLESS ~%spell%%TAB%%name_str%%TAB%%level%%TAB%%type%%TAB%%default%%TAB%%mother%~
 			END
 		END
 	END
@@ -68,6 +68,7 @@ COPY - ~%workspace%/buff_spell_dialog.2da~ ~%workspace%/buff_spell_dialog.2da~
 			READ_2DA_ENTRY_FORMER rows i 2 level
 			READ_2DA_ENTRY_FORMER rows i 3 type
 			READ_2DA_ENTRY_FORMER rows i 4 default
+			READ_2DA_ENTRY_FORMER rows i 5 mother
 			PATCH_IF level=j BEGIN
 				GET_STRREF name_str name
 				PHP_EACH dialog_state AS m => n BEGIN
