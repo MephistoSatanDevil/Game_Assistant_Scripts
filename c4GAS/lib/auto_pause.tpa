@@ -1,6 +1,6 @@
 
 DEFINE_ACTION_FUNCTION auto_pause BEGIN
-
+/*
 	//石肤
 	COPY_EXISTING spwi408.spl override sppr506.spl override
 		LPF GET_UNIQUE_FILE_NAME STR_VAR extension=eff base=~c4AI_AutoPause_SS1~ RET SS1=filename END
@@ -32,14 +32,14 @@ DEFINE_ACTION_FUNCTION auto_pause BEGIN
 	LAF CREATE_EMPTY_SPELL STR_VAR name=~%PFMW0SPL%~ END
 	COPY_EXISTING ~%PFMW0SPL%.spl~ override
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=177 target=2 timing=1 parameter1=0 parameter2=2 STR_VAR resource=~%PFMW0%~ END
-		
+*/		
 	COPY_EXISTING_REGEXP ~baldur.*\.bcs~ override
 		string_skin= RESOLVE_STR_REF ((AT 206))
 		string_weapon= RESOLVE_STR_REF ((AT 207))
 		FOR (slot=1;slot<7;++slot) BEGIN
 			R_B_B EVAL ~%SCRIPTS%/auto_pause.baf~  ~%SCRIPTS%/auto_pause.baf~ ON_MISMATCH
 				INNER_ACTION BEGIN
-					EXTEND_BOTTOM ~%SOURCE_RES%.bcs~ ~%SCRIPTS%/auto_pause.baf~ EVAL
+					EXTEND_TOP ~%SOURCE_RES%.bcs~ ~%SCRIPTS%/auto_pause.baf~ EVAL
 				END
 			END
 		END

@@ -55,6 +55,10 @@ The following type of spells supported:
 
 ## HISTORY
 
+- VERSION 1.5 2019.02.12
+	- Bug in auto pause function fixed.
+	- Change the function in 1-Key-Buffing: remove checks to the stats of the target except the resistance enchantment spells.
+
 - VERSION 1.4 2019.01.31
 	- Typo fix.
 	- Fix errors in scripts of 1-Key-Buffing function.

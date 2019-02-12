@@ -69,7 +69,7 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 								END
 							END
 						END ELSE BEGIN
-
+						/* 不进行状态判断
 							//已有标注的直接使用
 							PATCH_IF ~%scripts%~ STR_EQ ~*~ BEGIN
 								PATCH_FOR_EACH opcode0 IN 233 282 328 BEGIN
@@ -91,7 +91,7 @@ COPY - ~%workspace%/buff_spells_fixed.2da~ ~%workspace%/buff_spells_fixed.2da~
 								END
 								SPRINT trigger ~%scripts%~
 							END
-
+						*/
 						END
 
 						//团队buff默认变量
@@ -144,7 +144,7 @@ OUTER_FOR (order=1;order<7;++order) BEGIN
 			
 		ACTION_IF FILE_EXISTS ~%workspace%/buff_base_team_delay.baf~ BEGIN
 			COPY ~%workspace%/c4AIBF2%order%.baf~ ~%workspace%/c4AIBF2%order%.baf~
-				APPEND_FILE_EVALUATE ~OUTPUT%/buff_base_team_delay.baf~
+				APPEND_FILE_EVALUATE ~%workspace%/buff_base_team_delay.baf~
 		END
 				
 	END
