@@ -1,10 +1,10 @@
-[简体中文](README.md) [English](README-EN.md)
+[简体中文](README.md) | [English](README-EN.md)
 
 # Game Assistant Scripts
 
 **Author: c4_angel**  
-**Version: 1.4**  
-**Support languages: English, Simplified Chinese**
+**Support languages: English, Simplified Chinese**  
+**Version: 1.6**  [ChangeLog](CHANGELOG-EN.md)
 
 ## Compatibility and Installation
 - This mod only support Baldur's Gate Enhanced Edition(BG:EE), Siege of Dragonspear(SoD), Baldur's Gate II Enhanced Edition(BG2:EE) and Baldur's Gate Trilogh Enhanced Edition(EET).
@@ -13,7 +13,8 @@
 - At the beginning of install, the mod will ask the user to set three hotkeys. Also you can set them before install by editing the ini file in the mod folder, or use component 2 to set/change the hotkeys whenever you want.
 
 ## WHAT IS IT
-There are three of the script: Battle AI Script, Auto Pause, and a semi-auto buffing system called "1-Key-Buffing".  
+This mod aims to complete those boring, mechanical, time-wasting (IMO) operations automatically, by scripts.  
+There are three part of the mod (only one main component): Battle AI Script, Auto Pause, and a semi-auto buffing system called "1-Key-Buffing".  
 To use the script, you can:
 - Activate the AI mod (default hotkey is "A" to switch AI mod on/off, or click the lock button in the lower right conner of your screen).
 - Select one of your party member.
@@ -33,8 +34,8 @@ Just like the other AI scripts, this one controls the character's actions if no 
 ### Auto Pause
 Monitor the stat when characters cast those two kind of physical defence spells, and pause game when effects runs out.  
 These are global setting, and disabled by default.
-- Mage spell StoneSkins and druid spell IronSkins.
-- Protection from Magical Weapons and the Mantle series.
+- StoneSkins and IronSkins. (The character must be either mage, druid, or cleric/ranger, or had acquired use-any-item ability.)
+- Protection from Magical Weapons and the Mantle series. (The character must be mage, or had acquired use-any-item ability.)
 	
 ### 1-Key-Buffing
 There are two conditions must be satisfied to start 1-Key-Buffing: 
@@ -51,35 +52,3 @@ The following type of spells supported:
 - Divine spells provide resistance enchantment (both self and team): e.g. Resist Fire and Cold
 	
 **NOTE: In current version, the 1-Key-Buffing can read spells in vanilla BG:EE/BG2:EE, and those introduced/modified by “Improved Anvil v6.4”, "Eternal Force v4.4(Chinese only)" and "QC Kitpack v1.0(Chinese only)". So there may be differences when you install different mods. All supported spells are displayed in the console.**
-
-
-## HISTORY
-
-- VERSION 1.5 2019.02.12
-	- Bug in auto pause function fixed.
-	- Change the function in 1-Key-Buffing: remove checks to the stats of the target except the resistance enchantment spells.
-
-- VERSION 1.4 2019.01.31
-	- Typo fix.
-	- Fix errors in scripts of 1-Key-Buffing function.
-	- Some unique spells/skills from: "Improved Anvil v6.4", "Eternal Force v4.4(Chinese only)" and "QC Kitpack v1.0(Chinese only)" are supported now in 1-Key-Buffing.
-	- Shortened settings of 1-Key-Buffing in the console, now those unknown spells by the character will be hidden.
-
-- VERSION 1.3 2018.10.19
-	- Files convert to UTF8 no BOM.
-	- Add c4GAS prefix to ini file. (ALIEN)
-
-- VERSION 1.2 2018.10.13
-	- Add English readme file.
-	- Improved mod structure.
-	- Add config-default.ini in the mod folder for those users install mods with install tools e.g. BWS.
-	- Add component 2: Reset Hotkeys. User can reconfigure the hotkeys with out reinstall the core componnet.
-	- Fix some typos in the console dialog, e.g. cannot set enable/disable innate spells.
-	- Add Strength (level 2 arcane spell, both self and team) to supported 1-Key-Buffing spells.
-
-- VERSION 1.1 2018.09.12 
-	- Fix an issue when install the mod using English.
-	- Fix some typos in the console dialog.
-
-- VERSION 1.0 2018.09.11
-	- Rewrite c4AI to support Enhance Edition.

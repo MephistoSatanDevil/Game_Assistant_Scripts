@@ -8,7 +8,7 @@ call "%~dp0..\ModPackaging\utilities\ie_games.bat"
 
 :: /* 修改一下4个变量，指定Mod的名字、版本、作者名字和Mod目录名，前3项将出现在Windows的安装程序界面，请勿使用中文 */
 set "mod_name=c4_angel's Game Assistant Scripts"
-set "mod_version=v1.4"
+set "mod_version=v1.6"
 set "mod_author=c4_angel"
 set "mod_folder=c4GAS"
 
@@ -26,7 +26,7 @@ set ico_folder=%mod_folder%\style
 set audio_folder=%mod_folder%\audio
 set tispack_folder=%mod_folder%\tiz
 set iconv_folder=%mod_folder%\languages\iconv
-set mod_readme=https://trow.cc/board/showforum=36977
+set mod_readme=https://trow.cc/board/showtopic=36977
 
 :: /* 设置为不同系统打包安装文件，设为0表示不打包 */
 set build_windows=1
