@@ -7,7 +7,8 @@
 **Version: 1.6**  [ChangeLog](CHANGELOG-EN.md)
 
 ## Compatibility and Installation
-- This mod only support Baldur's Gate Enhanced Edition(BG:EE), Siege of Dragonspear(SoD), Baldur's Gate II Enhanced Edition(BG2:EE) and Baldur's Gate Trilogh Enhanced Edition(EET).
+- This mod only support Baldur's Gate Enhanced Edition(BG:EE), Siege of Dragonspear(SoD), Baldur's Gate II Enhanced Edition(BG2:EE) and Baldur's Gate Trilogh Enhanced Edition(EET), **with game version v2.5 or later**.
+- You must install Modmerge or [DLC Merger](https://github.com/Argent77/A7-DlcMerger/releases/latest) first before this mod if you want use this mod on SoD.
 - The mod will modify almost all of the spells in game (with no actual change to the effects of them) for checks in the scripts. So for insurance of the mod works well, it **MUST** be installed **AFTER** any mods which introduce new spell(s) or replace those already existed in game (such as Spell Revision). 
 - The mod append at least two slots to SPLSTATE.ids (the number may be larger based on your mod enviroment). So the mod may fail to install if there are not enough slots.
 - At the beginning of install, the mod will ask the user to set three hotkeys. Also you can set them before install by editing the ini file in the mod folder, or use component 2 to set/change the hotkeys whenever you want.
