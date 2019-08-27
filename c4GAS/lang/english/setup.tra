@@ -1,6 +1,9 @@
 
 @-10000	= ~This mod only support Baldur's Gate Enhanced Edition, Siege of Dragonspear, Baldur's Gate II Enhanced Edition and Baldur's Gate Trilogh Enhanced Edition!~
 @-10001	= ~The core component must be installed first!~
+@-10002 = ~You must install Modmerge or DLC Merger first.
+Check readme file for download link.~
+@-10003 = ~Only support game version v2.5 or later.~
 
 @-0 = ~c4_angel's Game Assistant Scripts (c4GAS) Core component~
 @-1 = ~Default hotkeys£ºL for Console£¬N for Self-buffing£¬M for Team-buffing.~
